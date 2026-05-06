@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🐍 Librerías Python · NumPy · Pandas · Matplotlib · SciPy · Plotly · G634 · Envigado</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050810;--s1:#0D1B2A;--s2:#112240;
+  --np:#4FC3F7;--pd:#69F0AE;--mp:#FFB300;--sp:#CE93D8;--pl:#FF6B6B;
+  --np2:#0288D1;--pd2:#00897B;--mp2:#F57F17;--sp2:#7B1FA2;--pl2:#C62828;
+  --gl:rgba(255,255,255,.06);--gb:rgba(255,255,255,.11)
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);min-height:100vh;color:#E8EFF8;overflow:hidden}
+.container{height:100vh;display:flex;flex-direction:column}
+
+/* HEADER */
+.header{background:rgba(5,8,16,.85);padding:9px 22px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(79,195,247,.18);backdrop-filter:blur(24px);z-index:100;flex-shrink:0;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;left:0;top:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,#4FC3F7,#69F0AE,#FFB300,#CE93D8,#FF6B6B,transparent)}
+.hl{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#050810,#1a1a3e);border:1px solid rgba(79,195,247,.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;animation:logogl 3s ease-in-out infinite}
+@keyframes logogl{0%,100%{box-shadow:0 0 10px rgba(79,195,247,.2)}50%{box-shadow:0 0 20px rgba(79,195,247,.5)}}
+.header h1{font-family:'Outfit';font-size:.9rem;font-weight:700;white-space:nowrap;background:linear-gradient(90deg,#4FC3F7,#69F0AE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.badge{font-size:.57rem;font-weight:700;padding:3px 9px;border-radius:20px;color:#fff;white-space:nowrap;letter-spacing:.3px}
+.bnp{background:rgba(79,195,247,.18);border:1px solid rgba(79,195,247,.35);color:#4FC3F7}
+.bpd{background:rgba(105,240,174,.18);border:1px solid rgba(105,240,174,.35);color:#69F0AE}
+.bmp{background:rgba(255,179,0,.18);border:1px solid rgba(255,179,0,.35);color:#FFB300}
+.bsp{background:rgba(206,147,216,.18);border:1px solid rgba(206,147,216,.35);color:#CE93D8}
+.bpl{background:rgba(255,107,107,.18);border:1px solid rgba(255,107,107,.35);color:#FF6B6B}
+.bgr{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#cdd9e5}
+.sc{font-family:'JetBrains Mono';font-size:.8rem;font-weight:600;color:#4FC3F7;background:rgba(79,195,247,.08);border:1px solid rgba(79,195,247,.2);padding:5px 13px;border-radius:20px}
+
+/* SLIDES */
+.slide{flex:1;display:none;padding:16px 30px 78px;overflow-y:auto;animation:se .5s cubic-bezier(.22,1,.36,1)}
+.slide.active{display:block}
+@keyframes se{from{opacity:0;transform:translateY(20px) scale(.988)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pi{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
+@keyframes sh{0%{background-position:-300% center}100%{background-position:300% center}}
+@keyframes fl{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes pu{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes glow-np{0%,100%{box-shadow:0 0 15px rgba(79,195,247,.15)}50%{box-shadow:0 0 30px rgba(79,195,247,.4)}}
+@keyframes glow-pd{0%,100%{box-shadow:0 0 15px rgba(105,240,174,.15)}50%{box-shadow:0 0 30px rgba(105,240,174,.4)}}
+@keyframes glow-mp{0%,100%{box-shadow:0 0 15px rgba(255,179,0,.15)}50%{box-shadow:0 0 30px rgba(255,179,0,.4)}}
+@keyframes glow-sp{0%,100%{box-shadow:0 0 15px rgba(206,147,216,.15)}50%{box-shadow:0 0 30px rgba(206,147,216,.4)}}
+@keyframes glow-pl{0%,100%{box-shadow:0 0 15px rgba(255,107,107,.15)}50%{box-shadow:0 0 30px rgba(255,107,107,.4)}}
+.slide::-webkit-scrollbar{width:4px}.slide::-webkit-scrollbar-thumb{background:rgba(79,195,247,.25);border-radius:2px}
+
+/* TYPOGRAPHY */
+.st{font-family:'Outfit';font-size:2rem;font-weight:900;margin-bottom:7px;letter-spacing:-1px;line-height:1.05;background:linear-gradient(135deg,#4FC3F7,#69F0AE,#FFB300,#CE93D8,#FF6B6B);background-size:400% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:sh 7s linear infinite;text-align:center}
+.ss{font-size:.9rem;margin-bottom:14px;opacity:.72;text-align:center}
+.lv{display:inline-block;padding:3px 12px;border-radius:50px;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
+.lv-np{background:rgba(79,195,247,.12);color:#4FC3F7;border:1px solid rgba(79,195,247,.28)}
+.lv-pd{background:rgba(105,240,174,.12);color:#69F0AE;border:1px solid rgba(105,240,174,.28)}
+.lv-mp{background:rgba(255,179,0,.12);color:#FFB300;border:1px solid rgba(255,179,0,.28)}
+.lv-sp{background:rgba(206,147,216,.12);color:#CE93D8;border:1px solid rgba(206,147,216,.28)}
+.lv-pl{background:rgba(255,107,107,.12);color:#FF6B6B;border:1px solid rgba(255,107,107,.28)}
+.lv-wh{background:rgba(255,255,255,.07);color:#cdd9e5;border:1px solid rgba(255,255,255,.15)}
+
+/* LIB CARDS */
+.lib-card{border-radius:16px;padding:18px;border:1px solid;transition:all .35s;position:relative;overflow:hidden;animation:fu .5s ease both}
+.lib-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:inherit;filter:brightness(1.8)}
+.lib-card:hover{transform:translateY(-5px) scale(1.01)}
+.lc-np{background:rgba(79,195,247,.06);border-color:rgba(79,195,247,.22);animation:glow-np 4s ease-in-out infinite}
+.lc-pd{background:rgba(105,240,174,.06);border-color:rgba(105,240,174,.22);animation:glow-pd 4s ease-in-out infinite .5s}
+.lc-mp{background:rgba(255,179,0,.06);border-color:rgba(255,179,0,.22);animation:glow-mp 4s ease-in-out infinite 1s}
+.lc-sp{background:rgba(206,147,216,.06);border-color:rgba(206,147,216,.22);animation:glow-sp 4s ease-in-out infinite 1.5s}
+.lc-pl{background:rgba(255,107,107,.06);border-color:rgba(255,107,107,.22);animation:glow-pl 4s ease-in-out infinite 2s}
+.lib-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.lc-np::after{background:linear-gradient(90deg,transparent,#4FC3F7,transparent)}
+.lc-pd::after{background:linear-gradient(90deg,transparent,#69F0AE,transparent)}
+.lc-mp::after{background:linear-gradient(90deg,transparent,#FFB300,transparent)}
+.lc-sp::after{background:linear-gradient(90deg,transparent,#CE93D8,transparent)}
+.lc-pl::after{background:linear-gradient(90deg,transparent,#FF6B6B,transparent)}
+.lib-icon{font-size:2.4rem;margin-bottom:8px;display:block}
+.lib-name{font-family:'Outfit';font-size:1.1rem;font-weight:800;margin-bottom:4px}
+.lib-version{font-family:'JetBrains Mono';font-size:.7rem;opacity:.5;margin-bottom:8px}
+.lib-desc{font-size:.78rem;opacity:.8;line-height:1.55}
+
+/* GRID */
+.grid{display:grid;gap:12px;margin:9px auto;max-width:1180px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:1fr 1fr 1fr 1fr}.g5{grid-template-columns:repeat(5,1fr)}
+.card{background:rgba(255,255,255,.04);border-radius:13px;padding:14px;border:1px solid rgba(255,255,255,.08);transition:all .3s;position:relative;overflow:hidden;animation:fu .45s ease both}
+.card:hover{transform:translateY(-4px);background:rgba(255,255,255,.08)}
+.card h3{font-family:'Outfit';font-weight:700;font-size:.9rem;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.card p{font-size:.78rem;opacity:.8;line-height:1.52}
+.card:nth-child(1){animation-delay:.03s}.card:nth-child(2){animation-delay:.06s}.card:nth-child(3){animation-delay:.09s}
+.card:nth-child(4){animation-delay:.12s}.card:nth-child(5){animation-delay:.15s}.card:nth-child(6){animation-delay:.18s}
+
+/* CODE BLOCKS */
+.code-wrap{background:#0A0F1A;border-radius:14px;overflow:hidden;margin:9px auto;border:1px solid rgba(79,195,247,.14);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.code-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06)}
+.code-dots{display:flex;gap:5px}
+.cd{width:10px;height:10px;border-radius:50%}
+.cd-r{background:#FF5F57}.cd-y{background:#FEBC2E}.cd-g{background:#28C840}
+.code-label{font-family:'JetBrains Mono';font-size:.72rem;color:#64748B;margin-left:auto}
+.code-body{padding:14px 17px;font-family:'JetBrains Mono';font-size:.76rem;line-height:1.8;overflow-x:auto;white-space:pre}
+.kw{color:#CE93D8}.fn{color:#4FC3F7}.st2{color:#69F0AE}.nu{color:#FFB300}.cm{color:#475569;font-style:italic}.gn{color:#52FA7C}.op{color:#FF6B6B}.dt{color:#FFC57A}.ms{color:#50C2F7}
+
+/* VISUAL CHART MOCKS */
+.chart-container{background:rgba(10,15,26,.7);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,.07);margin:8px 0;position:relative;overflow:hidden}
+.chart-container::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(79,195,247,.3),transparent)}
+.chart-title{font-family:'Outfit';font-size:.8rem;font-weight:700;margin-bottom:10px;color:#94A3B8}
+.bars-wrap{display:flex;align-items:flex-end;gap:6px;height:100px}
+.bar-c{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;transition:height .8s cubic-bezier(.22,1,.36,1);position:relative}
+.bar-fill::after{content:attr(data-v);position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:.63rem;font-weight:700;white-space:nowrap;font-family:'JetBrains Mono'}
+.bar-label{font-size:.62rem;color:#64748B;text-align:center;line-height:1.2}
+.line-chart{position:relative;height:80px;width:100%}
+.line-chart svg{width:100%;height:100%}
+.scatter-mock{display:flex;flex-wrap:wrap;gap:6px;height:80px;align-items:center;justify-content:center;position:relative}
+.dot{width:8px;height:8px;border-radius:50%;position:absolute}
+.plotly-badge{background:linear-gradient(135deg,rgba(255,107,107,.15),rgba(255,107,107,.05));border:1px solid rgba(255,107,107,.3);border-radius:8px;padding:6px 12px;font-size:.72rem;color:#FF6B6B;font-weight:700;display:inline-flex;align-items:center;gap:5px;margin:3px}
+
+/* TABLE */
+.it{width:100%;margin:8px auto;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;font-size:.75rem}
+.it th{background:rgba(79,195,247,.12);color:#4FC3F7;padding:8px 12px;font-weight:700;text-align:left;border-bottom:1px solid rgba(79,195,247,.2)}
+.it td{padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.03)}.it tr:hover td{background:rgba(79,195,247,.06)}
+
+/* STEP */
+.steps{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.step{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:9px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.sn{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;color:#000}
+.sn-np{background:#4FC3F7}.sn-pd{background:#69F0AE}.sn-mp{background:#FFB300}.sn-sp{background:#CE93D8}.sn-pl{background:#FF6B6B}
+.step p{font-size:.78rem;line-height:1.56}
+
+/* NOTE */
+.note{border-radius:0 9px 9px 0;padding:9px 13px;font-size:.78rem;line-height:1.6;margin:7px auto}
+.nb{background:rgba(79,195,247,.06);border-left:4px solid #4FC3F7}
+.ng{background:rgba(105,240,174,.06);border-left:4px solid #69F0AE}
+.ny{background:rgba(255,179,0,.06);border-left:4px solid #FFB300}
+.nsp{background:rgba(206,147,216,.06);border-left:4px solid #CE93D8}
+.npl{background:rgba(255,107,107,.06);border-left:4px solid #FF6B6B}
+
+/* COMP */
+.comp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px auto;max-width:1100px}
+
+/* PILL */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:50px;font-size:.7rem;font-weight:700;margin:2px}
+.pnp{background:rgba(79,195,247,.1);color:#4FC3F7;border:1px solid rgba(79,195,247,.25)}
+.ppd{background:rgba(105,240,174,.1);color:#69F0AE;border:1px solid rgba(105,240,174,.25)}
+.pmp{background:rgba(255,179,0,.1);color:#FFB300;border:1px solid rgba(255,179,0,.25)}
+.psp{background:rgba(206,147,216,.1);color:#CE93D8;border:1px solid rgba(206,147,216,.25)}
+.ppl{background:rgba(255,107,107,.1);color:#FF6B6B;border:1px solid rgba(255,107,107,.25)}
+
+/* PLOTLY SPECIAL */
+.plotly-demo{background:linear-gradient(135deg,rgba(255,107,107,.07),rgba(255,107,107,.02));border:1px solid rgba(255,107,107,.2);border-radius:14px;padding:16px;margin:8px 0;position:relative;overflow:hidden}
+.plotly-demo::before{content:'📊 PLOTLY INTERACTIVO';position:absolute;top:8px;right:12px;font-size:.6rem;font-weight:700;color:#FF6B6B;opacity:.5;letter-spacing:2px}
+
+/* SCHED */
+.tb-wrap{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px auto}
+.tb{padding:8px 7px;border-radius:9px;font-size:.66rem;text-align:center;font-weight:700;min-width:82px;cursor:default;transition:all .25s}
+.tb:hover{transform:scale(1.07) translateY(-2px)}
+.tb-np{background:rgba(79,195,247,.13);border:1px solid rgba(79,195,247,.3);color:#4FC3F7}
+.tb-pd{background:rgba(105,240,174,.13);border:1px solid rgba(105,240,174,.3);color:#69F0AE}
+.tb-mp{background:rgba(255,179,0,.13);border:1px solid rgba(255,179,0,.3);color:#FFB300}
+.tb-sp{background:rgba(206,147,216,.13);border:1px solid rgba(206,147,216,.3);color:#CE93D8}
+.tb-pl{background:rgba(255,107,107,.13);border:1px solid rgba(255,107,107,.3);color:#FF6B6B}
+.tb-br{background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.28);color:#FFD600}
+
+/* BIG */
+.big-e{font-size:3.8rem;animation:fl 3.5s ease-in-out infinite;display:block;text-align:center;margin-bottom:5px}
+
+/* ACTIVITIES */
+.btn{background:linear-gradient(135deg,#0288D1,#4FC3F7);color:#fff;padding:9px 20px;border:none;border-radius:50px;cursor:pointer;font-size:.85rem;font-weight:700;font-family:'Outfit';margin:5px;transition:all .28s;box-shadow:0 4px 14px rgba(2,136,209,.3)}
+.btn:hover{transform:translateY(-2px) scale(1.04)}
+.btn-sec{background:rgba(255,255,255,.08);color:#cdd9e5;border:1px solid rgba(255,255,255,.14);box-shadow:none}
+.gc{max-width:600px;margin:0 auto;text-align:center}
+.gs{font-family:'Outfit';font-size:1.15rem;color:#4FC3F7;font-weight:800;margin:6px 0}
+.dice{width:70px;height:70px;border:2px solid #4FC3F7;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-size:34px;cursor:pointer;background:rgba(79,195,247,.06);margin:6px;transition:all .28s;animation:pu 2.2s ease-in-out infinite}
+.dice:hover{transform:scale(1.12) rotate(8deg)}
+.qa{background:rgba(79,195,247,.05);padding:13px;border-radius:11px;border-left:3px solid #4FC3F7;margin:8px auto;max-width:520px;text-align:left}
+.qo{display:block;width:100%;padding:9px 12px;margin:4px 0;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.03);color:#E8EFF8;font-size:.81rem;cursor:pointer;text-align:left;font-family:'Outfit';font-weight:600;transition:all .2s}
+.qo:hover{border-color:#4FC3F7;background:rgba(79,195,247,.08);transform:translateX(4px)}
+.cwc{margin:5px 0;background:rgba(79,195,247,.04);padding:9px 12px;border-radius:8px;border-left:3px solid rgba(79,195,247,.4)}
+.cwc p{font-weight:600;color:#4FC3F7;font-size:.76rem;margin-bottom:3px}
+.cwc input{width:200px;padding:5px 9px;border:1.5px solid rgba(255,255,255,.12);border-radius:7px;font-size:.8rem;font-family:'JetBrains Mono';background:rgba(255,255,255,.04);color:#E8EFF8}
+.cwc input:focus{outline:none;border-color:#4FC3F7}
+.mc{background:linear-gradient(135deg,rgba(79,195,247,.15),rgba(105,240,174,.1));color:#fff;padding:10px 6px;border-radius:9px;cursor:pointer;font-size:.7rem;font-weight:700;text-align:center;min-height:56px;display:flex;align-items:center;justify-content:center;transition:all .28s;user-select:none;border:1px solid rgba(79,195,247,.2);font-family:'JetBrains Mono'}
+.mc:hover{transform:scale(1.05);background:linear-gradient(135deg,rgba(79,195,247,.28),rgba(105,240,174,.2))}
+.wb{display:none;background:linear-gradient(135deg,#0288D1,#00897B);color:#fff;padding:14px 22px;border-radius:12px;font-family:'Outfit';font-size:1rem;font-weight:800;margin-top:9px;animation:pi .5s ease;text-align:center}
+code{background:rgba(79,195,247,.08);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono';font-size:.82em;color:#4FC3F7;border:1px solid rgba(79,195,247,.15)}
+
+/* NAV */
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:10px;align-items:center;background:rgba(5,8,16,.9);padding:7px 18px;border-radius:50px;border:1px solid rgba(79,195,247,.2);backdrop-filter:blur(24px);box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.na{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0288D1,#4FC3F7);color:#fff;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .28s;font-weight:900}
+.na:hover:not(:disabled){transform:scale(1.15);box-shadow:0 4px 16px rgba(79,195,247,.4)}.na:disabled{opacity:.2;cursor:not-allowed}
+.ni{font-family:'JetBrains Mono';font-size:.78rem;font-weight:700;color:#4FC3F7;min-width:60px;text-align:center}
+.pb-bar{position:fixed;bottom:0;left:0;width:100%;height:3px;background:rgba(255,255,255,.05);z-index:999}
+.pf{height:100%;background:linear-gradient(90deg,#4FC3F7,#69F0AE,#FFB300,#CE93D8,#FF6B6B);width:4%;transition:width .45s;box-shadow:0 0 10px rgba(79,195,247,.4)}
+@media(max-width:768px){.st{font-size:1.6rem}.slide{padding:12px 12px 78px}.grid,.comp{grid-template-columns:1fr}.g3,.g4,.g5{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="header">
+  <div class="hl">
+    <div class="logo">🐍</div>
+    <h1>Librerías Python para Data Science</h1>
+    <span class="badge bnp">NumPy</span>
+    <span class="badge bpd">Pandas</span>
+    <span class="badge bmp">Matplotlib</span>
+    <span class="badge bsp">SciPy</span>
+    <span class="badge bpl">Plotly</span>
+    <span class="badge bgr">G634 · Envigado</span>
+  </div>
+  <div class="sc"><span id="cs">1</span> / <span id="ts">25</span></div>
+</header>
+
+<!-- S0 PORTADA -->
+<div class="slide active" id="s0">
+<div style="text-align:center;padding-top:2px">
+  <div class="big-e">🐍</div>
+  <h1 class="st" style="font-size:2.8rem">Librerías Python<br>para Data Science</h1>
+  <p class="ss" style="font-size:1rem">🏛️ Alcaldía de Envigado · G634 · Bootcamp IA Explorador · Biblioteca Débora Arango · 2026</p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-bottom:14px">
+    <span class="pill pnp">🔢 NumPy — Cálculo numérico</span>
+    <span class="pill ppd">📋 Pandas — Análisis de datos</span>
+    <span class="pill pmp">📊 Matplotlib — Visualización estática</span>
+    <span class="pill psp">🔬 SciPy — Estadística avanzada</span>
+    <span class="pill ppl">✨ Plotly — Gráficos interactivos</span>
+  </div>
+  <!-- 5 LIB CARDS -->
+  <div class="grid g5" style="max-width:1140px;margin:0 auto 14px">
+    <div class="lib-card lc-np" style="text-align:center">
+      <span class="lib-icon">🔢</span>
+      <div class="lib-name" style="color:#4FC3F7">NumPy</div>
+      <div class="lib-version">v2.0.0</div>
+      <div class="lib-desc">Arrays, álgebra lineal y operaciones matemáticas ultrarrápidas</div>
+      <div style="margin-top:8px;font-family:'JetBrains Mono';font-size:.72rem;color:#4FC3F7">import numpy as np</div>
+    </div>
+    <div class="lib-card lc-pd" style="text-align:center">
+      <span class="lib-icon">📋</span>
+      <div class="lib-name" style="color:#69F0AE">Pandas</div>
+      <div class="lib-version">v2.2.0</div>
+      <div class="lib-desc">DataFrames para analizar tablas de datos por secretaría</div>
+      <div style="margin-top:8px;font-family:'JetBrains Mono';font-size:.72rem;color:#69F0AE">import pandas as pd</div>
+    </div>
+    <div class="lib-card lc-mp" style="text-align:center">
+      <span class="lib-icon">📊</span>
+      <div class="lib-name" style="color:#FFB300">Matplotlib</div>
+      <div class="lib-version">v3.9.0</div>
+      <div class="lib-desc">Gráficos estáticos para informes y reportes de gestión</div>
+      <div style="margin-top:8px;font-family:'JetBrains Mono';font-size:.72rem;color:#FFB300">import matplotlib.pyplot as plt</div>
+    </div>
+    <div class="lib-card lc-sp" style="text-align:center">
+      <span class="lib-icon">🔬</span>
+      <div class="lib-name" style="color:#CE93D8">SciPy</div>
+      <div class="lib-version">v1.13.0</div>
+      <div class="lib-desc">Estadística avanzada: moda, correlación, hipótesis</div>
+      <div style="margin-top:8px;font-family:'JetBrains Mono';font-size:.72rem;color:#CE93D8">from scipy import stats</div>
+    </div>
+    <div class="lib-card lc-pl" style="text-align:center">
+      <span class="lib-icon">✨</span>
+      <div class="lib-name" style="color:#FF6B6B">Plotly</div>
+      <div class="lib-version">v5.22.0</div>
+      <div class="lib-desc">Dashboards interactivos — el futuro del análisis municipal</div>
+      <div style="margin-top:8px;font-family:'JetBrains Mono';font-size:.72rem;color:#FF6B6B">import plotly.express as px</div>
+    </div>
+  </div>
+  <div style="background:rgba(79,195,247,.05);border:1px solid rgba(79,195,247,.15);border-radius:13px;padding:10px 18px;max-width:440px;margin:0 auto;font-size:.78rem;opacity:.8">
+    👨‍🏫 <strong>Andrés Eduardo Perdomo López</strong> · Vittalik Technology SAS<br>
+    Talento Tech 2.0 · MinTIC · Universidad de Antioquia · IU Training
+  </div>
+</div>
+</div>
+
+<!-- S1 CRONOGRAMA -->
+<div class="slide" id="s1">
+<h1 class="st">⏰ Cronograma de la Sesión</h1>
+<p class="ss">📍 Biblioteca Pública Débora Arango · G634 · Sesión de Librerías Python</p>
+<div class="tb-wrap">
+  <div class="tb tb-np">⚙️<br>8:00–8:15<br>Setup<br>Google Colab</div>
+  <div class="tb tb-np">🔢<br>8:15–8:40<br>NumPy<br>Arrays</div>
+  <div class="tb tb-pd">📋<br>8:40–9:10<br>Pandas<br>DataFrames</div>
+  <div class="tb tb-br">☕<br>9:10–9:20<br>DESCANSO<br>10 min</div>
+  <div class="tb tb-mp">📊<br>9:20–9:50<br>Matplotlib<br>Gráficos</div>
+  <div class="tb tb-sp">🔬<br>9:50–10:20<br>SciPy<br>Estadística</div>
+  <div class="tb tb-pl">✨<br>10:20–11:00<br>Plotly<br>Interactivo</div>
+  <div class="tb tb-br">🎮<br>11:00–12:00<br>Actividades<br>+Cierre</div>
+</div>
+<table class="it" style="max-width:1100px;margin:10px auto">
+  <tr><th>⏱️ Hora</th><th>📚 Librería</th><th>🐍 Funciones clave</th><th>🏛️ Caso Envigado</th></tr>
+  <tr><td>8:00–8:15</td><td>⚙️ <strong>Setup Colab</strong> — instalar, importar, configurar</td><td><code>!pip install plotly</code> · <code>import</code></td><td>Preparar entorno de análisis</td></tr>
+  <tr><td>8:15–8:40</td><td>🔢 <strong>NumPy</strong> — cálculo numérico vectorizado</td><td><code>np.array · np.mean · np.std</code></td><td>Indicadores numéricos de secretarías</td></tr>
+  <tr><td>8:40–9:10</td><td>📋 <strong>Pandas</strong> — tablas de datos estructurados</td><td><code>pd.DataFrame · groupby · merge</code></td><td>Registro PQRS · Recaudo predial</td></tr>
+  <tr><td style="color:#FFD600;font-weight:700">9:10–9:20</td><td>☕ <strong>DESCANSO</strong></td><td>—</td><td style="color:#FFD600">10 min</td></tr>
+  <tr><td>9:20–9:50</td><td>📊 <strong>Matplotlib</strong> — visualización estática</td><td><code>plt.subplots · ax.bar · ax.hist · ax.scatter</code></td><td>Gráficos de informes y reportes</td></tr>
+  <tr><td>9:50–10:20</td><td>🔬 <strong>SciPy</strong> — estadística avanzada</td><td><code>stats.pearsonr · ttest_ind · norm</code></td><td>¿Mejoró el proceso? Hipótesis</td></tr>
+  <tr><td>10:20–11:00</td><td>✨ <strong>Plotly</strong> — dashboards interactivos</td><td><code>px.bar · px.line · px.scatter · px.choropleth</code></td><td>Dashboard de gestión municipal 🚀</td></tr>
+  <tr><td style="color:#FF6B6B;font-weight:700">11:00–12:00</td><td>🎮 <strong>Actividades + Cierre</strong></td><td>Trivia · Crucigrama · Memory · Socialización</td><td style="color:#FF6B6B">60 min</td></tr>
+</table>
+</div>
+
+<!-- S2 SETUP -->
+<div class="slide" id="s2">
+<span class="lv lv-wh">⚙️ SETUP</span>
+<h1 class="st">Instalar e Importar — El Primer Paso</h1>
+<p class="ss">Ejecuta este bloque al inicio de cada sesión en Google Colab · <code>Shift+Enter</code></p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">setup.py · Google Colab</span></div>
+      <div class="code-body"><span class="cm"># ─── INSTALACIÓN (solo si no están) ───────────────</span>
+<span class="op">!</span>pip install numpy pandas matplotlib scipy plotly <span class="st2">--quiet</span>
+<span class="cm"># ! = comando del sistema operativo en Colab</span>
+<span class="cm"># --quiet = sin mostrar todo el log de instalación</span>
+
+<span class="cm"># ─── IMPORTAR CON ALIAS ESTÁNDAR ──────────────────</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> <span class="np">np</span>           <span class="cm"># 🔢 numpy → np</span>
+<span class="kw">import</span> pandas <span class="kw">as</span> <span class="pd">pd</span>          <span class="cm"># 📋 pandas → pd</span>
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> <span class="mp">plt</span>  <span class="cm"># 📊 pyplot → plt</span>
+<span class="kw">from</span> scipy <span class="kw">import</span> <span class="sp">stats</span>      <span class="cm"># 🔬 scipy.stats</span>
+<span class="kw">import</span> plotly.express <span class="kw">as</span> <span class="pl">px</span>   <span class="cm"># ✨ plotly.express → px</span>
+<span class="kw">import</span> plotly.graph_objects <span class="kw">as</span> go  <span class="cm"># plotly avanzado</span>
+
+<span class="cm"># ─── CONFIGURAR MATPLOTLIB ────────────────────────</span>
+plt.rcParams[<span class="st2">'figure.figsize'</span>] = (<span class="nu">10</span>, <span class="nu">5</span>)
+plt.rcParams[<span class="st2">'axes.titlesize'</span>] = <span class="nu">13</span>
+plt.rcParams[<span class="st2">'font.family'</span>] = <span class="st2">'sans-serif'</span>
+
+<span class="fn">print</span>(<span class="st2">'✅ Todo listo · Bienvenido al análisis de datos'</span>)
+<span class="fn">print</span>(<span class="st2">'🏛️ Alcaldía de Envigado · G634 · 2026'</span>)
+</div></div>
+  </div>
+  <div>
+    <div class="grid" style="max-width:100%;gap:9px;margin:0">
+      <div class="card" style="border-color:rgba(79,195,247,.2)"><h3 style="color:#4FC3F7">🔢 numpy <code>as np</code></h3><p>El alias <code>np</code> es universal. Todos los data scientists del mundo usan exactamente esto. No uses <code>import numpy</code> sin alias.</p></div>
+      <div class="card" style="border-color:rgba(105,240,174,.2)"><h3 style="color:#69F0AE">📋 pandas <code>as pd</code></h3><p>El alias <code>pd</code> también es estándar global. Al escribir <code>pd.DataFrame()</code> cualquiera sabe que es Pandas.</p></div>
+      <div class="card" style="border-color:rgba(255,179,0,.2)"><h3 style="color:#FFB300">📊 matplotlib.pyplot <code>as plt</code></h3><p>Se importa solo el módulo <code>pyplot</code> — el que tiene todas las funciones para graficar.</p></div>
+      <div class="card" style="border-color:rgba(255,107,107,.2)"><h3 style="color:#FF6B6B">✨ plotly.express <code>as px</code></h3><p>La versión simplificada de Plotly. Con <code>px.bar(df, x='col1', y='col2')</code> tienes un gráfico interactivo en 1 línea.</p></div>
+    </div>
+    <div class="note nb" style="margin-top:9px">💡 <strong>¿Por qué alias?</strong> Sin alias escribirías <code>numpy.mean()</code> y <code>pandas.DataFrame()</code> — son más largas. Con alias: <code>np.mean()</code> y <code>pd.DataFrame()</code> — más rápido y más legible.</div>
+  </div>
+</div>
+</div>
+
+<!-- S3 NUMPY INTRO -->
+<div class="slide" id="s3">
+<span class="lv lv-np">🔢 NUMPY</span>
+<h1 class="st">NumPy — El Motor Matemático</h1>
+<p class="ss">Cálculo numérico 100x más rápido que Python puro · La base de todo el ecosistema de datos</p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">numpy_intro.py</span></div>
+      <div class="code-body"><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># ─── CREAR ARRAYS ─────────────────────────────────</span>
+<span class="cm"># 🟢 np.array() convierte una lista en array NumPy</span>
+pqrs_mensuales = np.<span class="fn">array</span>([<span class="nu">412</span>, <span class="nu">438</span>, <span class="nu">465</span>, <span class="nu">420</span>, <span class="nu">480</span>,
+                             <span class="nu">392</span>, <span class="nu">455</span>, <span class="nu">471</span>, <span class="nu">448</span>, <span class="nu">436</span>])
+<span class="cm"># PQRS recibidas en Alcaldía de Envigado (ene–oct)</span>
+
+<span class="cm"># ─── ESTADÍSTICAS INSTANTÁNEAS ────────────────────</span>
+<span class="fn">print</span>(f<span class="st2">'Media:    {np.mean(pqrs_mensuales):.1f}'</span>)
+<span class="fn">print</span>(f<span class="st2">'Mediana:  {np.median(pqrs_mensuales):.1f}'</span>)
+<span class="fn">print</span>(f<span class="st2">'Std:      {np.std(pqrs_mensuales):.1f}'</span>)
+<span class="fn">print</span>(f<span class="st2">'Min/Max:  {np.min(pqrs_mensuales)} / {np.max(pqrs_mensuales)}'</span>)
+
+<span class="cm"># ─── OPERACIONES VECTORIZADAS ─────────────────────</span>
+<span class="cm"># 🟢 En Python normal necesitarías un for loop</span>
+<span class="cm"># 🟢 NumPy lo hace a TODOS los elementos a la vez</span>
+meta = <span class="nu">450</span>
+diferencia = pqrs_mensuales - meta
+<span class="cm"># [412-450, 438-450, 465-450, ...] = [-38, -12, 15, ...]</span>
+meses_excedidos = np.<span class="fn">sum</span>(pqrs_mensuales > meta)
+<span class="fn">print</span>(f<span class="st2">'Meses sobre la meta: {meses_excedidos}'</span>)
+</div></div>
+  </div>
+  <div>
+    <div class="chart-container">
+      <div class="chart-title">📊 PQRS Mensuales · Alcaldía de Envigado · 2026</div>
+      <div class="bars-wrap">
+        <div class="bar-c"><div class="bar-fill" style="height:62%;background:linear-gradient(180deg,#4FC3F7,#0288D1)" data-v="412">412</div><div class="bar-label">Ene</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:70%;background:linear-gradient(180deg,#4FC3F7,#0288D1)" data-v="438">438</div><div class="bar-label">Feb</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:80%;background:linear-gradient(180deg,#FF6B6B,#C62828)" data-v="465">465</div><div class="bar-label">Mar</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:65%;background:linear-gradient(180deg,#4FC3F7,#0288D1)" data-v="420">420</div><div class="bar-label">Abr</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:88%;background:linear-gradient(180deg,#FF6B6B,#C62828)" data-v="480">480</div><div class="bar-label">May</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:52%;background:linear-gradient(180deg,#69F0AE,#00897B)" data-v="392">392</div><div class="bar-label">Jun</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:76%;background:linear-gradient(180deg,#FF6B6B,#C62828)" data-v="455">455</div><div class="bar-label">Jul</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:82%;background:linear-gradient(180deg,#FF6B6B,#C62828)" data-v="471">471</div><div class="bar-label">Ago</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:74%;background:linear-gradient(180deg,#FFB300,#F57F17)" data-v="448">448</div><div class="bar-label">Sep</div></div>
+        <div class="bar-c"><div class="bar-fill" style="height:71%;background:linear-gradient(180deg,#4FC3F7,#0288D1)" data-v="436">436</div><div class="bar-label">Oct</div></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px;font-size:.68rem">
+        <span style="color:#69F0AE">🟢 Bajo meta 450</span>
+        <span style="color:#FFB300">🟡 Cerca meta</span>
+        <span style="color:#FF6B6B">🔴 Sobre meta</span>
+      </div>
+    </div>
+    <div class="note nb" style="margin-top:8px">🔢 <strong>¿Por qué NumPy?</strong> <code>sum([x-450 for x in lista])</code> con Python puro es lento. <code>np.sum(array - 450)</code> es 100x más rápido porque opera sobre todos los elementos en paralelo usando C compilado.</div>
+  </div>
+</div>
+</div>
+
+<!-- S4 NUMPY FUNCIONES -->
+<div class="slide" id="s4">
+<span class="lv lv-np">🔢 NUMPY — FUNCIONES CLAVE</span>
+<h1 class="st">NumPy — El Kit Completo</h1>
+<p class="ss">Las funciones que usarás todos los días para analizar indicadores de la Alcaldía</p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">numpy_funciones.py</span></div>
+      <div class="code-body"><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># ─── CREAR ARRAYS ─────────────────────────────────</span>
+a = np.<span class="fn">array</span>([<span class="nu">3</span>, <span class="nu">5</span>, <span class="nu">4</span>, <span class="nu">7</span>, <span class="nu">2</span>, <span class="nu">8</span>])  <span class="cm"># desde lista</span>
+b = np.<span class="fn">zeros</span>(<span class="nu">5</span>)             <span class="cm"># [0,0,0,0,0]</span>
+c = np.<span class="fn">ones</span>((<span class="nu">3</span>, <span class="nu">3</span>))          <span class="cm"># matriz 3×3 de unos</span>
+r = np.<span class="fn">arange</span>(<span class="nu">1</span>, <span class="nu">13</span>)         <span class="cm"># [1,2,...,12] meses</span>
+rn = np.random.<span class="fn">normal</span>(<span class="nu">5</span>, <span class="nu">1.5</span>, <span class="nu">100</span>) <span class="cm"># 100 tiempos simulados</span>
+
+<span class="cm"># ─── ESTADÍSTICAS ─────────────────────────────────</span>
+np.<span class="fn">mean</span>(a)        <span class="cm"># → promedio</span>
+np.<span class="fn">median</span>(a)      <span class="cm"># → valor central</span>
+np.<span class="fn">std</span>(a)         <span class="cm"># → desviación estándar</span>
+np.<span class="fn">var</span>(a)         <span class="cm"># → varianza</span>
+np.<span class="fn">min</span>(a)         <span class="cm"># → mínimo</span>
+np.<span class="fn">max</span>(a)         <span class="cm"># → máximo</span>
+np.<span class="fn">percentile</span>(a, <span class="nu">75</span>)  <span class="cm"># → Q3</span>
+
+<span class="cm"># ─── OPERACIONES VECTORIZADAS ─────────────────────</span>
+np.<span class="fn">sum</span>(a > <span class="nu">5</span>)      <span class="cm"># cuántos valores > 5</span>
+np.<span class="fn">where</span>(a > <span class="nu">5</span>, <span class="st2">'🔴'</span>, <span class="st2">'🟢'</span>)  <span class="cm"># condicional</span>
+np.<span class="fn">sort</span>(a)        <span class="cm"># ordenar</span>
+np.<span class="fn">cumsum</span>(a)      <span class="cm"># suma acumulativa</span>
+</div></div>
+  </div>
+  <div>
+    <table class="it" style="margin:0 0 9px">
+      <tr><th>Función</th><th>Resultado con [3,5,4,7,2,8]</th><th>Uso en Envigado</th></tr>
+      <tr><td><code>np.mean(a)</code></td><td><span style="color:#4FC3F7;font-family:JetBrains Mono;font-weight:700">4.83</span></td><td>Días promedio de respuesta PQRS</td></tr>
+      <tr><td><code>np.median(a)</code></td><td><span style="color:#4FC3F7;font-family:JetBrains Mono;font-weight:700">4.5</span></td><td>Mediana de recaudo predial</td></tr>
+      <tr><td><code>np.std(a)</code></td><td><span style="color:#4FC3F7;font-family:JetBrains Mono;font-weight:700">2.11</span></td><td>Variabilidad en tiempos de atención</td></tr>
+      <tr><td><code>np.percentile(a,75)</code></td><td><span style="color:#4FC3F7;font-family:JetBrains Mono;font-weight:700">6.25</span></td><td>Q3 para clasificar secretarías</td></tr>
+      <tr><td><code>np.sum(a > 5)</code></td><td><span style="color:#FF6B6B;font-family:JetBrains Mono;font-weight:700">2</span></td><td>Meses que superaron la meta</td></tr>
+      <tr><td><code>np.where(a>5,'🔴','🟢')</code></td><td><span style="color:#69F0AE;font-family:JetBrains Mono;font-size:.7rem">Semáforo</span></td><td>Alerta automática de indicadores</td></tr>
+    </table>
+    <div class="note nb">🔢 <strong>Truco con np.where():</strong><br><code>np.where(tiempos > meta, '🔴 ALERTA', '✅ OK')</code><br>Genera semáforo automático para TODAS las secretarías en una sola línea — sin necesidad de for loops.</div>
+  </div>
+</div>
+</div>
+
+<!-- S5 PANDAS INTRO -->
+<div class="slide" id="s5">
+<span class="lv lv-pd">📋 PANDAS</span>
+<h1 class="st">Pandas — El Excel de Python</h1>
+<p class="ss">DataFrames para analizar registros de PQRS, recaudo y gestión de la Alcaldía</p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">pandas_dataframe.py</span></div>
+      <div class="code-body"><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># ─── CREAR DATAFRAME ───────────────────────────────</span>
+<span class="cm"># 🟢 pd.DataFrame() crea una tabla con columnas</span>
+df_pqrs = pd.<span class="fn">DataFrame</span>({
+    <span class="st2">'secretaria'</span>: [<span class="st2">'Gobierno'</span>, <span class="st2">'Hacienda'</span>, <span class="st2">'Salud'</span>,
+                    <span class="st2">'Educación'</span>, <span class="st2">'Obras'</span>, <span class="st2">'Ambiente'</span>],
+    <span class="st2">'pqrs_mes'</span>:   [<span class="nu">142</span>, <span class="nu">89</span>, <span class="nu">203</span>, <span class="nu">78</span>, <span class="nu">165</span>, <span class="nu">54</span>],
+    <span class="st2">'dias_resp'</span>:  [<span class="nu">5.1</span>, <span class="nu">3.2</span>, <span class="nu">7.8</span>, <span class="nu">4.5</span>, <span class="nu">12.3</span>, <span class="nu">6.1</span>],
+    <span class="st2">'satisf'</span>:     [<span class="nu">78</span>, <span class="nu">85</span>, <span class="nu">62</span>, <span class="nu">81</span>, <span class="nu">55</span>, <span class="nu">74</span>]
+})
+
+<span class="cm"># ─── EXPLORAR ──────────────────────────────────────</span>
+df_pqrs.<span class="fn">head</span>()        <span class="cm"># primeras 5 filas</span>
+df_pqrs.<span class="fn">describe</span>()    <span class="cm"># estadísticas rápidas</span>
+df_pqrs.<span class="fn">info</span>()        <span class="cm"># tipos de datos</span>
+
+<span class="cm"># ─── FILTRAR Y ORDENAR ─────────────────────────────</span>
+<span class="cm"># 🟢 Secretarías con más de 100 PQRS y < 7 días de respuesta</span>
+eficientes = df_pqrs[
+    (df_pqrs[<span class="st2">'pqrs_mes'</span>] > <span class="nu">100</span>) &
+    (df_pqrs[<span class="st2">'dias_resp'</span>] < <span class="nu">7</span>)
+]
+<span class="cm"># 🟢 Ordenar por satisfacción (mayor primero)</span>
+ranking = df_pqrs.<span class="fn">sort_values</span>(<span class="st2">'satisf'</span>, ascending=<span class="kw">False</span>)
+</div></div>
+  </div>
+  <div>
+    <div class="chart-container" style="margin-bottom:9px">
+      <div class="chart-title">📋 DataFrame df_pqrs — Vista tabla</div>
+      <table class="it" style="margin:0;font-size:.72rem">
+        <tr><th>#</th><th>secretaria</th><th>pqrs_mes</th><th>dias_resp</th><th>satisf</th></tr>
+        <tr><td>0</td><td>🏛️ Gobierno</td><td>142</td><td>5.1</td><td><span style="color:#69F0AE">78</span></td></tr>
+        <tr><td>1</td><td>💰 Hacienda</td><td>89</td><td>3.2</td><td><span style="color:#69F0AE">85 🏆</span></td></tr>
+        <tr><td>2</td><td>🏥 Salud</td><td>203</td><td>7.8</td><td><span style="color:#FF6B6B">62</span></td></tr>
+        <tr><td>3</td><td>🎓 Educación</td><td>78</td><td>4.5</td><td><span style="color:#69F0AE">81</span></td></tr>
+        <tr><td>4</td><td>🏗️ Obras</td><td>165</td><td style="color:#FF6B6B">12.3</td><td><span style="color:#FF6B6B">55 ⚠️</span></td></tr>
+        <tr><td>5</td><td>🌿 Ambiente</td><td>54</td><td>6.1</td><td><span style="color:#FFB300">74</span></td></tr>
+      </table>
+    </div>
+    <div class="note ng">📋 <strong>Pandas vs Excel:</strong> Pandas puede manejar millones de filas (presupuesto completo de Envigado) mientras Excel colapsa con 100.000. Además puedes automatizar el análisis — no hacerlo manualmente cada mes.</div>
+  </div>
+</div>
+</div>
+
+<!-- S6 PANDAS AVANZADO -->
+<div class="slide" id="s6">
+<span class="lv lv-pd">📋 PANDAS AVANZADO</span>
+<h1 class="st">GroupBy · Merge · Apply</h1>
+<p class="ss">Las 3 operaciones más poderosas para cruzar datos de secretarías</p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">pandas_avanzado.py</span></div>
+      <div class="code-body"><span class="cm"># ─── GROUPBY ──────────────────────────────────────</span>
+<span class="cm"># 🟢 .groupby() agrupa filas por categoría</span>
+resumen = df_pqrs.<span class="fn">groupby</span>(<span class="st2">'secretaria'</span>).<span class="fn">agg</span>({
+    <span class="st2">'pqrs_mes'</span>: [<span class="st2">'sum'</span>, <span class="st2">'mean'</span>],
+    <span class="st2">'dias_resp'</span>: <span class="st2">'mean'</span>,
+    <span class="st2">'satisf'</span>: <span class="st2">'max'</span>
+})
+
+<span class="cm"># ─── APPLY CON FUNCIÓN PROPIA ─────────────────────</span>
+<span class="cm"># 🟢 .apply() aplica una función a cada fila</span>
+<span class="kw">def</span> <span class="fn">semaforo</span>(dias):
+    <span class="kw">if</span> dias <= <span class="nu">5</span>:   <span class="kw">return</span> <span class="st2">'🟢 OK'</span>
+    <span class="kw">elif</span> dias <= <span class="nu">10</span>: <span class="kw">return</span> <span class="st2">'🟡 Riesgo'</span>
+    <span class="kw">else</span>:           <span class="kw">return</span> <span class="st2">'🔴 Crítico'</span>
+
+df_pqrs[<span class="st2">'estado'</span>] = df_pqrs[<span class="st2">'dias_resp'</span>].<span class="fn">apply</span>(semaforo)
+
+<span class="cm"># ─── MERGE (cruzar 2 tablas) ──────────────────────</span>
+<span class="cm"># 🟢 Como un JOIN en SQL o BUSCARV en Excel</span>
+df_presupuesto = pd.<span class="fn">DataFrame</span>({
+    <span class="st2">'secretaria'</span>: [<span class="st2">'Gobierno'</span>,<span class="st2">'Hacienda'</span>,<span class="st2">'Salud'</span>],
+    <span class="st2">'presupuesto'</span>: [<span class="nu">500</span>, <span class="nu">800</span>, <span class="nu">1200</span>]
+})
+df_completo = pd.<span class="fn">merge</span>(df_pqrs, df_presupuesto,
+                         on=<span class="st2">'secretaria'</span>, how=<span class="st2">'left'</span>)
+</div></div>
+  </div>
+  <div>
+    <div class="grid" style="max-width:100%;gap:9px;margin:0">
+      <div class="card" style="border-color:rgba(105,240,174,.2)">
+        <h3 style="color:#69F0AE">🔀 .groupby() + .agg()</h3>
+        <p>Como una tabla dinámica de Excel. Agrupa por secretaría y calcula: suma, promedio, máximo, mínimo — todo a la vez en 3 líneas.</p>
+        <div style="margin-top:6px;font-family:'JetBrains Mono';font-size:.71rem;color:#69F0AE;background:rgba(105,240,174,.05);padding:6px;border-radius:6px">df.groupby('zona')['recaudo'].mean()</div>
+      </div>
+      <div class="card" style="border-color:rgba(105,240,174,.2)">
+        <h3 style="color:#69F0AE">⚡ .apply(función)</h3>
+        <p>Aplica una función personalizada a cada valor. Perfecto para crear semáforos, clasificar secretarías o calcular indicadores complejos.</p>
+        <div style="margin-top:6px;font-family:'JetBrains Mono';font-size:.71rem;color:#69F0AE;background:rgba(105,240,174,.05);padding:6px;border-radius:6px">df['estado'] = df['dias'].apply(semaforo)</div>
+      </div>
+      <div class="card" style="border-color:rgba(105,240,174,.2)">
+        <h3 style="color:#69F0AE">🔗 pd.merge()</h3>
+        <p>Cruza dos tablas por una columna común. Como BUSCARV en Excel pero más potente: maneja millones de filas sin problemas.</p>
+        <div style="margin-top:6px;font-family:'JetBrains Mono';font-size:.71rem;color:#69F0AE;background:rgba(105,240,174,.05);padding:6px;border-radius:6px">pd.merge(df1, df2, on='secretaria')</div>
+      </div>
+      <div class="card" style="border-color:rgba(105,240,174,.2)">
+        <h3 style="color:#69F0AE">📊 .describe() rápido</h3>
+        <p>En una línea: count, mean, std, min, Q1, Q2, Q3, max. Primera función a ejecutar al analizar cualquier dataset de la Alcaldía.</p>
+        <div style="margin-top:6px;font-family:'JetBrains Mono';font-size:.71rem;color:#69F0AE;background:rgba(105,240,174,.05);padding:6px;border-radius:6px">df_pqrs.describe()</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- S7 MATPLOTLIB -->
+<div class="slide" id="s7">
+<span class="lv lv-mp">📊 MATPLOTLIB</span>
+<h1 class="st">Matplotlib — Visualiza tus Datos</h1>
+<p class="ss">Gráficos estáticos de alta calidad para informes y reportes de la Alcaldía de Envigado</p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">matplotlib_galeria.py</span></div>
+      <div class="code-body"><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># 🟢 fig, ax = la base de todo gráfico en Matplotlib</span>
+<span class="cm"># fig = la figura (canvas) · ax = los ejes (el gráfico)</span>
+fig, axes = plt.<span class="fn">subplots</span>(<span class="nu">2</span>, <span class="nu">2</span>, figsize=(<span class="nu">12</span>, <span class="nu">8</span>))
+<span class="cm"># 2x2 = 4 gráficos en una sola figura</span>
+
+<span class="cm"># ─── GRÁFICO 1: BARRAS ────────────────────────────</span>
+secs = [<span class="st2">'Gov'</span>,<span class="st2">'Hac'</span>,<span class="st2">'Sal'</span>,<span class="st2">'Edu'</span>,<span class="st2">'Obr'</span>]
+vals = [<span class="nu">142</span>, <span class="nu">89</span>, <span class="nu">203</span>, <span class="nu">78</span>, <span class="nu">165</span>]
+colores = [<span class="st2">'#4FC3F7'</span> <span class="kw">if</span> v<<span class="nu">150</span> <span class="kw">else</span> <span class="st2">'#FF6B6B'</span> <span class="kw">for</span> v <span class="kw">in</span> vals]
+axes[<span class="nu">0</span>,<span class="nu">0</span>].<span class="fn">bar</span>(secs, vals, color=colores, edgecolor=<span class="st2">'white'</span>)
+axes[<span class="nu">0</span>,<span class="nu">0</span>].<span class="fn">set_title</span>(<span class="st2">'PQRS por Secretaría'</span>)
+
+<span class="cm"># ─── GRÁFICO 2: HISTOGRAMA ─────────────────────────</span>
+tiempos = np.random.<span class="fn">normal</span>(<span class="nu">5</span>, <span class="nu">1.5</span>, <span class="nu">200</span>)
+axes[<span class="nu">0</span>,<span class="nu">1</span>].<span class="fn">hist</span>(tiempos, bins=<span class="nu">20</span>, color=<span class="st2">'#69F0AE'</span>, alpha=<span class="nu">0.7</span>)
+axes[<span class="nu">0</span>,<span class="nu">1</span>].<span class="fn">axvline</span>(np.<span class="fn">mean</span>(tiempos), color=<span class="st2">'red'</span>, lw=<span class="nu">2</span>)
+
+<span class="cm"># ─── GRÁFICO 3: SCATTER ────────────────────────────</span>
+inversion = [<span class="nu">150</span>,<span class="nu">200</span>,<span class="nu">280</span>,<span class="nu">180</span>,<span class="nu">320</span>]
+satisf    = [<span class="nu">62</span>, <span class="nu">70</span>, <span class="nu">82</span>, <span class="nu">65</span>, <span class="nu">88</span>]
+axes[<span class="nu">1</span>,<span class="nu">0</span>].<span class="fn">scatter</span>(inversion, satisf, s=<span class="nu">80</span>, color=<span class="st2">'#FFB300'</span>)
+
+<span class="cm"># ─── GRÁFICO 4: BOXPLOT ─────────────────────────── </span>
+axes[<span class="nu">1</span>,<span class="nu">1</span>].<span class="fn">boxplot</span>([np.random.<span class="fn">normal</span>(<span class="nu">5</span>,<span class="nu">1</span>,<span class="nu">50</span>),
+                    np.random.<span class="fn">normal</span>(<span class="nu">8</span>,<span class="nu">3</span>,<span class="nu">50</span>)])
+
+plt.<span class="fn">tight_layout</span>()  <span class="cm"># 🟢 ajustar márgenes</span>
+plt.<span class="fn">show</span>()
+</div></div>
+  </div>
+  <div>
+    <div class="grid g2" style="max-width:100%;gap:9px;margin:0">
+      <div class="chart-container">
+        <div class="chart-title">📊 ax.bar() — Barras</div>
+        <div class="bars-wrap" style="height:80px">
+          <div class="bar-c"><div class="bar-fill" style="height:70%;background:linear-gradient(180deg,#4FC3F7,#0288D1)" data-v="142"></div><div class="bar-label" style="font-size:.6rem">Gov</div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:44%;background:linear-gradient(180deg,#4FC3F7,#0288D1)" data-v="89"></div><div class="bar-label" style="font-size:.6rem">Hac</div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:100%;background:linear-gradient(180deg,#FF6B6B,#C62828)" data-v="203"></div><div class="bar-label" style="font-size:.6rem">Sal</div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:38%;background:linear-gradient(180deg,#4FC3F7,#0288D1)" data-v="78"></div><div class="bar-label" style="font-size:.6rem">Edu</div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:81%;background:linear-gradient(180deg,#FF6B6B,#C62828)" data-v="165"></div><div class="bar-label" style="font-size:.6rem">Obr</div></div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">📊 ax.hist() — Histograma</div>
+        <div class="bars-wrap" style="height:80px;gap:2px">
+          <div class="bar-c"><div class="bar-fill" style="height:10%;background:rgba(105,240,174,.6)"></div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:25%;background:rgba(105,240,174,.7)"></div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:55%;background:rgba(105,240,174,.8)"></div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:90%;background:rgba(105,240,174,.9)"></div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:100%;background:#69F0AE"></div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:90%;background:rgba(105,240,174,.9)"></div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:60%;background:rgba(105,240,174,.8)"></div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:30%;background:rgba(105,240,174,.7)"></div></div>
+          <div class="bar-c"><div class="bar-fill" style="height:12%;background:rgba(105,240,174,.6)"></div></div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">📊 ax.scatter() — Dispersión</div>
+        <div style="position:relative;height:75px">
+          <div class="dot" style="left:15%;top:75%;background:#FFB300;width:10px;height:10px"></div>
+          <div class="dot" style="left:30%;top:58%;background:#FFB300;width:10px;height:10px"></div>
+          <div class="dot" style="left:50%;top:38%;background:#FFB300;width:10px;height:10px"></div>
+          <div class="dot" style="left:65%;top:50%;background:#FFB300;width:10px;height:10px"></div>
+          <div class="dot" style="left:83%;top:18%;background:#FFB300;width:10px;height:10px"></div>
+          <svg style="position:absolute;top:0;left:0;width:100%;height:100%"><line x1="5%" y1="85%" x2="95%" y2="10%" stroke="rgba(255,179,0,.5)" stroke-width="2" stroke-dasharray="5"/></svg>
+        </div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">📊 ax.boxplot() — Cajas</div>
+        <div style="display:flex;gap:20px;height:75px;align-items:center;justify-content:center">
+          <div style="display:flex;flex-direction:column;align-items:center;width:40px">
+            <div style="width:2px;height:12px;background:#4FC3F7"></div>
+            <div style="width:30px;height:30px;background:rgba(79,195,247,.2);border:1.5px solid #4FC3F7;display:flex;align-items:center;justify-content:center"><div style="width:28px;height:1.5px;background:#4FC3F7"></div></div>
+            <div style="width:2px;height:12px;background:#4FC3F7"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;width:40px">
+            <div style="width:2px;height:20px;background:#CE93D8"></div>
+            <div style="width:30px;height:40px;background:rgba(206,147,216,.2);border:1.5px solid #CE93D8;display:flex;align-items:center;justify-content:center"><div style="width:28px;height:1.5px;background:#CE93D8"></div></div>
+            <div style="width:2px;height:8px;background:#CE93D8"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note ny" style="margin-top:8px">📊 <strong>plt.subplots(2,2)</strong> → 4 gráficos en cuadrícula · <code>plt.tight_layout()</code> → ajusta espaciado automáticamente · <code>plt.savefig('informe.png', dpi=300)</code> → guarda con alta resolución para informes oficiales</div>
+  </div>
+</div>
+</div>
+
+<!-- S8 SCIPY -->
+<div class="slide" id="s8">
+<span class="lv lv-sp">🔬 SCIPY</span>
+<h1 class="st">SciPy — Estadística Avanzada</h1>
+<p class="ss">Pruebas estadísticas para tomar decisiones basadas en datos · ¿La mejora es real o casualidad?</p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">scipy_estadistica.py</span></div>
+      <div class="code-body"><span class="kw">from</span> scipy <span class="kw">import</span> stats
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># ─── MODA ─────────────────────────────────────────</span>
+<span class="cm"># 🟢 Para datos numéricos discretos</span>
+calificaciones = [<span class="nu">4</span>,<span class="nu">5</span>,<span class="nu">4</span>,<span class="nu">4</span>,<span class="nu">5</span>,<span class="nu">3</span>,<span class="nu">4</span>,<span class="nu">5</span>,<span class="nu">4</span>,<span class="nu">3</span>]
+m = stats.<span class="fn">mode</span>(calificaciones, keepdims=<span class="kw">True</span>)
+<span class="fn">print</span>(f<span class="st2">'Moda: {m.mode[0]} estrellas'</span>)
+
+<span class="cm"># ─── CORRELACIÓN DE PEARSON ───────────────────────</span>
+<span class="cm"># 🟢 r y p-valor: ¿están relacionadas las variables?</span>
+inversion    = [<span class="nu">150</span>, <span class="nu">200</span>, <span class="nu">280</span>, <span class="nu">180</span>, <span class="nu">320</span>]
+satisfaccion = [<span class="nu">62</span>,  <span class="nu">70</span>,  <span class="nu">82</span>,  <span class="nu">65</span>,  <span class="nu">88</span>]
+r, p = stats.<span class="fn">pearsonr</span>(inversion, satisfaccion)
+<span class="fn">print</span>(f<span class="st2">'r={r:.3f}, p={p:.4f}'</span>)
+<span class="cm"># Si p < 0.05 → correlación estadísticamente real</span>
+
+<span class="cm"># ─── PRUEBA t DE HIPÓTESIS ───────────────────────</span>
+<span class="cm"># ¿M365 Copilot mejoró el tiempo de respuesta PQRS?</span>
+np.random.<span class="fn">seed</span>(<span class="nu">42</span>)
+antes   = np.random.<span class="fn">normal</span>(<span class="nu">8.0</span>, <span class="nu">2.5</span>, <span class="nu">30</span>)
+despues = np.random.<span class="fn">normal</span>(<span class="nu">5.5</span>, <span class="nu">1.8</span>, <span class="nu">30</span>)
+t, p = stats.<span class="fn">ttest_ind</span>(antes, despues)
+<span class="fn">print</span>(f<span class="st2">'p-valor: {p:.6f}'</span>)
+<span class="cm"># p < 0.05 → la mejora es REAL, no casualidad</span>
+</div></div>
+  </div>
+  <div>
+    <div style="display:grid;grid-template-columns:1fr;gap:9px">
+      <div class="card" style="border-color:rgba(206,147,216,.22)">
+        <h3 style="color:#CE93D8">🎯 stats.mode() — Moda</h3>
+        <p style="margin-bottom:6px">Para encontrar el valor más frecuente en datos numéricos. Úsalo para calificaciones de satisfacción (1–5 estrellas) o tipos de trámite codificados.</p>
+        <div style="font-family:'JetBrains Mono';font-size:.72rem;color:#CE93D8;background:rgba(206,147,216,.05);padding:5px 8px;border-radius:5px">stats.mode(datos, keepdims=True)</div>
+      </div>
+      <div class="card" style="border-color:rgba(206,147,216,.22)">
+        <h3 style="color:#CE93D8">🔗 stats.pearsonr() — Correlación</h3>
+        <p style="margin-bottom:6px">Mide si dos variables están relacionadas. Devuelve <strong>r</strong> (fuerza: -1 a +1) y <strong>p</strong> (significancia: &lt;0.05 = real).</p>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:5px">
+          <span style="font-family:'JetBrains Mono';font-size:.7rem;padding:3px 8px;background:rgba(0,200,83,.1);color:#69F0AE;border-radius:5px">r &gt; 0.7 → fuerte</span>
+          <span style="font-family:'JetBrains Mono';font-size:.7rem;padding:3px 8px;background:rgba(255,179,0,.1);color:#FFB300;border-radius:5px">r 0.4-0.7 → moderado</span>
+          <span style="font-family:'JetBrains Mono';font-size:.7rem;padding:3px 8px;background:rgba(255,107,107,.1);color:#FF6B6B;border-radius:5px">r &lt; 0.4 → débil</span>
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(206,147,216,.22)">
+        <h3 style="color:#CE93D8">🔬 stats.ttest_ind() — Prueba t</h3>
+        <p style="margin-bottom:6px">Compara dos grupos para saber si la diferencia es estadísticamente real. <strong>p &lt; 0.05</strong> → la mejora no es casualidad → es una decisión válida.</p>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:5px">
+          <span style="font-family:'JetBrains Mono';font-size:.7rem;padding:3px 8px;background:rgba(0,200,83,.1);color:#69F0AE;border-radius:5px">p &lt; 0.05 ✅ real</span>
+          <span style="font-family:'JetBrains Mono';font-size:.7rem;padding:3px 8px;background:rgba(255,107,107,.1);color:#FF6B6B;border-radius:5px">p ≥ 0.05 ❌ casualidad</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- S9 PLOTLY INTRO -->
+<div class="slide" id="s9">
+<span class="lv lv-pl">✨ PLOTLY — NUEVA LIBRERÍA</span>
+<h1 class="st">Plotly — Gráficos Interactivos</h1>
+<p class="ss">La evolución de Matplotlib · Hover · Zoom · Filtros · Dashboards · Todo en el navegador</p>
+<div class="comp">
+  <div>
+    <div class="plotly-demo">
+      <div class="chart-title" style="color:#FF6B6B;margin-bottom:12px">✨ ¿Por qué Plotly?</div>
+      <div class="grid g2" style="max-width:100%;gap:8px;margin:0 0 10px">
+        <div style="background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.15);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:.68rem;color:#64748B;margin-bottom:3px">MATPLOTLIB</div>
+          <div style="font-size:.85rem;font-weight:700;color:#cdd9e5">Imagen estática PNG</div>
+          <div style="font-size:.7rem;opacity:.6;margin-top:2px">Sin interacción · Para informes PDF</div>
+        </div>
+        <div style="background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.28);border-radius:8px;padding:10px;text-align:center;box-shadow:0 0 15px rgba(255,107,107,.15)">
+          <div style="font-size:.68rem;color:#FF6B6B;margin-bottom:3px">PLOTLY ✨</div>
+          <div style="font-size:.85rem;font-weight:700;color:#FF6B6B">Gráfico HTML interactivo</div>
+          <div style="font-size:.7rem;color:#FF6B6B;margin-top:2px">Hover · Zoom · Pan · Filtros</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span class="plotly-badge"><i class="fas fa-mouse-pointer"></i> Hover = ver valores exactos</span>
+        <span class="plotly-badge"><i class="fas fa-search-plus"></i> Zoom con scroll</span>
+        <span class="plotly-badge"><i class="fas fa-filter"></i> Filtrar por clic en leyenda</span>
+        <span class="plotly-badge"><i class="fas fa-download"></i> Descargar PNG/SVG</span>
+        <span class="plotly-badge"><i class="fas fa-globe"></i> Compartir como URL</span>
+        <span class="plotly-badge"><i class="fas fa-mobile"></i> Funciona en celular</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">plotly_express.py — 1 línea = gráfico completo</span></div>
+      <div class="code-body"><span class="kw">import</span> plotly.express <span class="kw">as</span> px
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># 🟢 El DataFrame de la Alcaldía</span>
+df = pd.<span class="fn">DataFrame</span>({
+    <span class="st2">'secretaria'</span>: [<span class="st2">'Gobierno'</span>,<span class="st2">'Hacienda'</span>,<span class="st2">'Salud'</span>,
+                    <span class="st2">'Educación'</span>,<span class="st2">'Obras'</span>,<span class="st2">'Ambiente'</span>],
+    <span class="st2">'pqrs'</span>:       [<span class="nu">142</span>, <span class="nu">89</span>, <span class="nu">203</span>, <span class="nu">78</span>, <span class="nu">165</span>, <span class="nu">54</span>],
+    <span class="st2">'satisf'</span>:     [<span class="nu">78</span>, <span class="nu">85</span>, <span class="nu">62</span>, <span class="nu">81</span>, <span class="nu">55</span>, <span class="nu">74</span>],
+    <span class="st2">'presup'</span>:     [<span class="nu">500</span>, <span class="nu">800</span>, <span class="nu">1200</span>, <span class="nu">950</span>, <span class="nu">700</span>, <span class="nu">300</span>]
+})
+
+<span class="cm"># 🟢 BARRAS — 1 sola línea, totalmente interactivo</span>
+fig = px.<span class="fn">bar</span>(df, x=<span class="st2">'secretaria'</span>, y=<span class="st2">'pqrs'</span>,
+             color=<span class="st2">'satisf'</span>, color_continuous_scale=<span class="st2">'RdYlGn'</span>,
+             title=<span class="st2">'PQRS por Secretaría · Envigado 2026'</span>,
+             labels={<span class="st2">'pqrs'</span>:<span class="st2">'PQRS'</span>,<span class="st2">'satisf'</span>:<span class="st2">'Satisfacción'</span>})
+fig.<span class="fn">show</span>()  <span class="cm"># Se abre en el navegador · Interactivo ✨</span>
+</div></div>
+  </div>
+</div>
+</div>
+
+<!-- S10 PLOTLY GALERÍA -->
+<div class="slide" id="s10">
+<span class="lv lv-pl">✨ PLOTLY — TIPOS DE GRÁFICOS</span>
+<h1 class="st">La Galería de Plotly Express</h1>
+<p class="ss">Un gráfico diferente para cada pregunta sobre los datos de la Alcaldía</p>
+<div class="grid g3" style="max-width:1100px">
+  <div class="lib-card lc-pl">
+    <h3 style="color:#FF6B6B;margin-bottom:6px">📊 px.bar()</h3>
+    <div class="code-body" style="background:transparent;padding:6px 0;font-size:.72rem;color:#94A3B8">px.<span class="fn">bar</span>(df, x=<span class="st2">'secretaria'</span>,<br>        y=<span class="st2">'pqrs'</span>, color=<span class="st2">'zona'</span>,<br>        barmode=<span class="st2">'group'</span>)</div>
+    <div style="font-size:.75rem;opacity:.75;margin-top:5px">Barras agrupadas para comparar PQRS por secretaría y zona. Color automático.</div>
+  </div>
+  <div class="lib-card lc-pl">
+    <h3 style="color:#FF6B6B;margin-bottom:6px">📈 px.line()</h3>
+    <div class="code-body" style="background:transparent;padding:6px 0;font-size:.72rem;color:#94A3B8">px.<span class="fn">line</span>(df, x=<span class="st2">'mes'</span>,<br>         y=<span class="st2">'recaudo'</span>,<br>         color=<span class="st2">'zona'</span>)</div>
+    <div style="font-size:.75rem;opacity:.75;margin-top:5px">Tendencia del recaudo predial mensual por zona. Zoom con scroll.</div>
+  </div>
+  <div class="lib-card lc-pl">
+    <h3 style="color:#FF6B6B;margin-bottom:6px">🔴 px.scatter()</h3>
+    <div class="code-body" style="background:transparent;padding:6px 0;font-size:.72rem;color:#94A3B8">px.<span class="fn">scatter</span>(df, x=<span class="st2">'presup'</span>,<br>            y=<span class="st2">'satisf'</span>,<br>            size=<span class="st2">'pqrs'</span>, text=<span class="st2">'sec'</span>)</div>
+    <div style="font-size:.75rem;opacity:.75;margin-top:5px">Correlación inversión vs satisfacción. Tamaño = volumen PQRS.</div>
+  </div>
+  <div class="lib-card lc-pl">
+    <h3 style="color:#FF6B6B;margin-bottom:6px">🥧 px.pie()</h3>
+    <div class="code-body" style="background:transparent;padding:6px 0;font-size:.72rem;color:#94A3B8">px.<span class="fn">pie</span>(df, values=<span class="st2">'presup'</span>,<br>         names=<span class="st2">'secretaria'</span>,<br>         hole=<span class="nu">0.3</span>)</div>
+    <div style="font-size:.75rem;opacity:.75;margin-top:5px">Distribución del presupuesto municipal. Donut chart moderno.</div>
+  </div>
+  <div class="lib-card lc-pl">
+    <h3 style="color:#FF6B6B;margin-bottom:6px">📦 px.box()</h3>
+    <div class="code-body" style="background:transparent;padding:6px 0;font-size:.72rem;color:#94A3B8">px.<span class="fn">box</span>(df, x=<span class="st2">'secretaria'</span>,<br>         y=<span class="st2">'dias_resp'</span>,<br>         color=<span class="st2">'secretaria'</span>)</div>
+    <div style="font-size:.75rem;opacity:.75;margin-top:5px">Boxplot interactivo. Hover muestra Q1, Q2, Q3, outliers por secretaría.</div>
+  </div>
+  <div class="lib-card lc-pl">
+    <h3 style="color:#FF6B6B;margin-bottom:6px">🗺️ px.choropleth()</h3>
+    <div class="code-body" style="background:transparent;padding:6px 0;font-size:.72rem;color:#94A3B8">px.<span class="fn">choropleth</span>(df,<br>   locations=<span class="st2">'zona'</span>,<br>   color=<span class="st2">'recaudo'</span>)</div>
+    <div style="font-size:.75rem;opacity:.75;margin-top:5px">Mapa de calor por zona. Ideal para visualizar recaudo predial geográficamente.</div>
+  </div>
+</div>
+</div>
+
+<!-- S11 PLOTLY DASHBOARD -->
+<div class="slide" id="s11">
+<span class="lv lv-pl">✨ PLOTLY — DASHBOARD MUNICIPAL</span>
+<h1 class="st">Dashboard de Gestión — Alcaldía Envigado</h1>
+<p class="ss">Combinar múltiples gráficos de Plotly en un panel de indicadores interactivo</p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">dashboard_envigado.py</span></div>
+      <div class="code-body"><span class="kw">import</span> plotly.graph_objects <span class="kw">as</span> go
+<span class="kw">from</span> plotly.subplots <span class="kw">import</span> make_subplots
+<span class="kw">import</span> plotly.express <span class="kw">as</span> px
+<span class="kw">import</span> pandas <span class="kw">as</span> pd, numpy <span class="kw">as</span> np
+
+<span class="cm"># 🟢 make_subplots() = múltiples gráficos en una figura</span>
+fig = make_subplots(
+    rows=<span class="nu">2</span>, cols=<span class="nu">2</span>,
+    subplot_titles=(<span class="st2">'PQRS por Secretaría'</span>,
+                    <span class="st2">'Satisfacción Ciudadana'</span>,
+                    <span class="st2">'Ejecución Presupuestal'</span>,
+                    <span class="st2">'Tendencia PQRS Mensual'</span>),
+    specs=[[{<span class="st2">'type'</span>:<span class="st2">'bar'</span>},{<span class="st2">'type'</span>:<span class="st2">'bar'</span>}],
+           [{<span class="st2">'type'</span>:<span class="st2">'bar'</span>},{<span class="st2">'type'</span>:<span class="st2">'scatter'</span>}]]
+)
+
+<span class="cm"># 🟢 Agregar trazas a cada subplot</span>
+fig.<span class="fn">add_trace</span>(go.<span class="fn">Bar</span>(x=secs, y=pqrs, name=<span class="st2">'PQRS'</span>,
+    marker_color=[<span class="st2">'#4FC3F7'</span> <span class="kw">if</span> v<<span class="nu">150</span> <span class="kw">else</span> <span class="st2">'#FF6B6B'</span>
+                  <span class="kw">for</span> v <span class="kw">in</span> pqrs]), row=<span class="nu">1</span>, col=<span class="nu">1</span>)
+
+fig.<span class="fn">add_trace</span>(go.<span class="fn">Bar</span>(x=secs, y=satisf,
+    marker_color=<span class="st2">'#69F0AE'</span>, name=<span class="st2">'Satisfacción'</span>), row=<span class="nu">1</span>, col=<span class="nu">2</span>)
+
+<span class="cm"># 🟢 Actualizar diseño global</span>
+fig.<span class="fn">update_layout</span>(title_text=<span class="st2">'📊 Dashboard · Alcaldía Envigado'</span>,
+                  template=<span class="st2">'plotly_dark'</span>, height=<span class="nu">600</span>)
+fig.<span class="fn">show</span>()  <span class="cm"># ✨ Dashboard interactivo completo</span>
+</div></div>
+  </div>
+  <div>
+    <div class="plotly-demo" style="height:calc(100% - 10px)">
+      <div style="font-size:.82rem;font-weight:800;color:#FF6B6B;margin-bottom:10px">✨ Vista previa — Dashboard Alcaldía Envigado</div>
+      <div class="grid g2" style="max-width:100%;gap:8px;margin:0">
+        <div class="chart-container" style="background:rgba(0,0,0,.4)">
+          <div class="chart-title" style="font-size:.7rem">PQRS por Secretaría</div>
+          <div class="bars-wrap" style="height:65px">
+            <div class="bar-c"><div class="bar-fill" style="height:70%;background:rgba(79,195,247,.6)"></div><div class="bar-label" style="font-size:.58rem">Gov</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:44%;background:rgba(79,195,247,.6)"></div><div class="bar-label" style="font-size:.58rem">Hac</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:100%;background:rgba(255,107,107,.8)"></div><div class="bar-label" style="font-size:.58rem">Sal</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:38%;background:rgba(79,195,247,.6)"></div><div class="bar-label" style="font-size:.58rem">Edu</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:81%;background:rgba(255,107,107,.8)"></div><div class="bar-label" style="font-size:.58rem">Obr</div></div>
+          </div>
+        </div>
+        <div class="chart-container" style="background:rgba(0,0,0,.4)">
+          <div class="chart-title" style="font-size:.7rem">Satisfacción Ciudadana %</div>
+          <div class="bars-wrap" style="height:65px">
+            <div class="bar-c"><div class="bar-fill" style="height:78%;background:rgba(105,240,174,.7)"></div><div class="bar-label" style="font-size:.58rem">Gov</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:85%;background:rgba(105,240,174,.9)"></div><div class="bar-label" style="font-size:.58rem">Hac</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:62%;background:rgba(255,107,107,.7)"></div><div class="bar-label" style="font-size:.58rem">Sal</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:81%;background:rgba(105,240,174,.8)"></div><div class="bar-label" style="font-size:.58rem">Edu</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:55%;background:rgba(255,107,107,.7)"></div><div class="bar-label" style="font-size:.58rem">Obr</div></div>
+          </div>
+        </div>
+        <div class="chart-container" style="background:rgba(0,0,0,.4)">
+          <div class="chart-title" style="font-size:.7rem">Ejecución Presupuestal %</div>
+          <div class="bars-wrap" style="height:65px">
+            <div class="bar-c"><div class="bar-fill" style="height:64%;background:rgba(255,179,0,.7)"></div><div class="bar-label" style="font-size:.58rem">Gov</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:92%;background:rgba(105,240,174,.8)"></div><div class="bar-label" style="font-size:.58rem">Hac</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:70%;background:rgba(255,179,0,.7)"></div><div class="bar-label" style="font-size:.58rem">Sal</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:85%;background:rgba(105,240,174,.8)"></div><div class="bar-label" style="font-size:.58rem">Edu</div></div>
+            <div class="bar-c"><div class="bar-fill" style="height:40%;background:rgba(255,107,107,.7)"></div><div class="bar-label" style="font-size:.58rem">Obr</div></div>
+          </div>
+        </div>
+        <div class="chart-container" style="background:rgba(0,0,0,.4)">
+          <div class="chart-title" style="font-size:.7rem">Tendencia PQRS Mensual</div>
+          <svg viewBox="0 0 200 65" style="width:100%;height:65px">
+            <polyline points="10,55 35,48 60,52 85,38 110,42 135,35 160,28 185,20" stroke="#FF6B6B" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="10,55 35,48 60,52 85,38 110,42 135,35 160,28 185,20" stroke="rgba(255,107,107,.15)" stroke-width="2.5" fill="rgba(255,107,107,.1)" stroke-linecap="round"/>
+            <circle cx="185" cy="20" r="3" fill="#FF6B6B"/>
+          </svg>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:.72rem;color:#64748B">✨ En Plotly real: hover en cada punto muestra el valor exacto · Clic en leyenda filtra · Scroll para zoom</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- S12 MATPLOTLIB VS PLOTLY -->
+<div class="slide" id="s12">
+<h1 class="st">📊 Matplotlib vs ✨ Plotly</h1>
+<p class="ss">¿Cuándo usar cada una? Ambas son necesarias — tienen propósitos diferentes</p>
+<div class="comp">
+  <div>
+    <div class="card" style="border-color:rgba(255,179,0,.25);height:100%">
+      <h3 style="color:#FFB300;margin-bottom:10px;font-size:1.1rem">📊 MATPLOTLIB — Úsalo cuando...</h3>
+      <div class="steps">
+        <div class="step"><div class="sn sn-mp">✅</div><p>Necesitas exportar a <strong>PDF o PNG</strong> para informes oficiales, actas o presentaciones del Concejo Municipal</p></div>
+        <div class="step"><div class="sn sn-mp">✅</div><p>Quieres gráficos de <strong>alta resolución</strong> con <code>dpi=300</code> para impresión de calidad</p></div>
+        <div class="step"><div class="sn sn-mp">✅</div><p>Necesitas <strong>personalización total</strong>: fuentes, colores específicos, posición exacta de elementos</p></div>
+        <div class="step"><div class="sn sn-mp">✅</div><p>Trabajas en <strong>entornos sin internet</strong> o sistemas sin JavaScript</p></div>
+        <div class="step"><div class="sn sn-mp">✅</div><p>El gráfico va <strong>dentro de un documento Word</strong> o PowerPoint generado con Python</p></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card" style="border-color:rgba(255,107,107,.25);height:100%">
+      <h3 style="color:#FF6B6B;margin-bottom:10px;font-size:1.1rem">✨ PLOTLY — Úsalo cuando...</h3>
+      <div class="steps">
+        <div class="step"><div class="sn sn-pl">✅</div><p>Necesitas un <strong>dashboard interactivo</strong> que la Alcaldía actualizará periódicamente con datos de gestión</p></div>
+        <div class="step"><div class="sn sn-pl">✅</div><p>Quieres que el Alcalde o los Secretarios puedan <strong>explorar los datos</strong> por sí mismos haciendo hover y zoom</p></div>
+        <div class="step"><div class="sn sn-pl">✅</div><p>El análisis se va a <strong>publicar en la web</strong> o compartir como enlace entre funcionarios</p></div>
+        <div class="step"><div class="sn sn-pl">✅</div><p>Tienes múltiples dimensiones de datos (<strong>color + tamaño + forma + animación</strong>) que mostrar a la vez</p></div>
+        <div class="step"><div class="sn sn-pl">✅</div><p>Quieres que los ciudadanos puedan <strong>interactuar con los datos</strong> del portal de transparencia de Envigado</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="note npl" style="max-width:1100px;margin-top:10px">💡 <strong>Regla práctica para la Alcaldía:</strong> Matplotlib → informes PDF mensuales para el Concejo · Plotly → dashboard web de indicadores para el portal de transparencia municipal · ¡Ambas se complementan perfectamente!</div>
+</div>
+
+<!-- S13 RESUMEN FUNCIONES -->
+<div class="slide" id="s13">
+<h1 class="st">📚 Resumen — Las 5 Librerías</h1>
+<p class="ss">Kit completo de análisis de datos Python para la Alcaldía de Envigado</p>
+<table class="it" style="max-width:1100px;margin:9px auto">
+  <tr><th>Librería</th><th>🐍 Funciones clave</th><th>¿Para qué?</th><th>Caso Envigado</th></tr>
+  <tr><td><span class="badge bnp">NumPy</span></td><td><code>np.array · np.mean · np.std · np.where · np.percentile</code></td><td>Cálculo numérico vectorizado</td><td>Indicadores numéricos de secretarías</td></tr>
+  <tr><td><span class="badge bpd">Pandas</span></td><td><code>pd.DataFrame · .groupby · .merge · .apply · .describe</code></td><td>Tablas y análisis por categoría</td><td>Registro PQRS, recaudo predial, nómina</td></tr>
+  <tr><td><span class="badge bmp">Matplotlib</span></td><td><code>plt.subplots · ax.bar · ax.hist · ax.scatter · ax.boxplot</code></td><td>Gráficos estáticos PDF/PNG</td><td>Informes para el Concejo Municipal</td></tr>
+  <tr><td><span class="badge bsp">SciPy</span></td><td><code>stats.mode · stats.pearsonr · stats.ttest_ind · stats.norm</code></td><td>Estadística inferencial</td><td>¿Mejoró el proceso? ¿Es real la correlación?</td></tr>
+  <tr><td><span class="badge bpl">Plotly</span></td><td><code>px.bar · px.line · px.scatter · px.pie · make_subplots</code></td><td>Gráficos interactivos HTML</td><td>Dashboard de gestión municipal web</td></tr>
+</table>
+<div class="grid g5" style="max-width:1140px;margin:10px auto">
+  <div style="text-align:center;padding:10px;background:rgba(79,195,247,.05);border-radius:10px;border:1px solid rgba(79,195,247,.15)"><div style="font-size:1.8rem">🔢</div><div style="font-size:.75rem;font-weight:700;color:#4FC3F7;margin-top:4px">NumPy</div><div style="font-size:.68rem;opacity:.6;margin-top:2px">import numpy as np</div></div>
+  <div style="text-align:center;padding:10px;background:rgba(105,240,174,.05);border-radius:10px;border:1px solid rgba(105,240,174,.15)"><div style="font-size:1.8rem">📋</div><div style="font-size:.75rem;font-weight:700;color:#69F0AE;margin-top:4px">Pandas</div><div style="font-size:.68rem;opacity:.6;margin-top:2px">import pandas as pd</div></div>
+  <div style="text-align:center;padding:10px;background:rgba(255,179,0,.05);border-radius:10px;border:1px solid rgba(255,179,0,.15)"><div style="font-size:1.8rem">📊</div><div style="font-size:.75rem;font-weight:700;color:#FFB300;margin-top:4px">Matplotlib</div><div style="font-size:.68rem;opacity:.6;margin-top:2px">import matplotlib.pyplot as plt</div></div>
+  <div style="text-align:center;padding:10px;background:rgba(206,147,216,.05);border-radius:10px;border:1px solid rgba(206,147,216,.15)"><div style="font-size:1.8rem">🔬</div><div style="font-size:.75rem;font-weight:700;color:#CE93D8;margin-top:4px">SciPy</div><div style="font-size:.68rem;opacity:.6;margin-top:2px">from scipy import stats</div></div>
+  <div style="text-align:center;padding:10px;background:rgba(255,107,107,.08);border-radius:10px;border:1px solid rgba(255,107,107,.25);box-shadow:0 0 15px rgba(255,107,107,.1)"><div style="font-size:1.8rem">✨</div><div style="font-size:.75rem;font-weight:700;color:#FF6B6B;margin-top:4px">Plotly</div><div style="font-size:.68rem;opacity:.6;margin-top:2px">import plotly.express as px</div></div>
+</div>
+</div>
+
+<!-- S14 APLICABILIDAD POR SECRETARÍA -->
+<div class="slide" id="s14">
+<h1 class="st">🏛️ Python en Cada Secretaría</h1>
+<p class="ss">Qué librería y función usar según el tipo de análisis de cada área</p>
+<div class="grid" style="max-width:1100px">
+  <div class="card" style="border-color:rgba(79,195,247,.2)"><h3>🏛️ Gobierno</h3><p><span class="badge bnp" style="font-size:.6rem;padding:1px 6px">NumPy</span> Contar meses sobre meta PQRS<br><span class="badge bpd" style="font-size:.6rem;padding:1px 6px">Pandas</span> Registro de quejas por barrio<br><span class="badge bpl" style="font-size:.6rem;padding:1px 6px">Plotly</span> Dashboard de convivencia ciudadana</p></div>
+  <div class="card" style="border-color:rgba(105,240,174,.2)"><h3>💰 Hacienda</h3><p><span class="badge bpd" style="font-size:.6rem;padding:1px 6px">Pandas</span> Tabla de ejecución presupuestal<br><span class="badge bmp" style="font-size:.6rem;padding:1px 6px">Matplotlib</span> Gráfico de recaudo para informe<br><span class="badge bpl" style="font-size:.6rem;padding:1px 6px">Plotly</span> Dashboard tributario interactivo</p></div>
+  <div class="card" style="border-color:rgba(255,179,0,.2)"><h3>🏥 Salud</h3><p><span class="badge bnp" style="font-size:.6rem;padding:1px 6px">NumPy</span> Media de días de espera para cita<br><span class="badge bsp" style="font-size:.6rem;padding:1px 6px">SciPy</span> ¿Redujo espera el nuevo protocolo?<br><span class="badge bpl" style="font-size:.6rem;padding:1px 6px">Plotly</span> Mapa de cobertura de vacunación</p></div>
+  <div class="card" style="border-color:rgba(206,147,216,.2)"><h3>🎓 Educación</h3><p><span class="badge bpd" style="font-size:.6rem;padding:1px 6px">Pandas</span> Resultados pruebas Saber por IE<br><span class="badge bsp" style="font-size:.6rem;padding:1px 6px">SciPy</span> Correlación inversión vs. resultados<br><span class="badge bpl" style="font-size:.6rem;padding:1px 6px">Plotly</span> Ranking interactivo de colegios</p></div>
+  <div class="card" style="border-color:rgba(255,107,107,.2)"><h3>🏗️ Obras</h3><p><span class="badge bpd" style="font-size:.6rem;padding:1px 6px">Pandas</span> Seguimiento de proyectos en ejecución<br><span class="badge bmp" style="font-size:.6rem;padding:1px 6px">Matplotlib</span> Gráfico de avance por proyecto<br><span class="badge bpl" style="font-size:.6rem;padding:1px 6px">Plotly</span> Timeline interactivo de obras</p></div>
+  <div class="card" style="border-color:rgba(0,188,212,.2)"><h3>🌿 Ambiente</h3><p><span class="badge bnp" style="font-size:.6rem;padding:1px 6px">NumPy</span> Calcular índices de calidad del aire<br><span class="badge bsp" style="font-size:.6rem;padding:1px 6px">SciPy</span> Tendencia de contaminación<br><span class="badge bpl" style="font-size:.6rem;padding:1px 6px">Plotly</span> Mapa ambiental interactivo</p></div>
+</div>
+</div>
+
+<!-- S15 TRIVIA DADOS -->
+<div class="slide" id="s15">
+<h1 class="st">🎲 Trivia con Dados — Librerías Python</h1>
+<p class="ss">🏛️ 11:00 · Tira el dado · Ganas los puntos si aciertas · Meta grupal: 25 puntos · Soluciones en archivo aparte</p>
+<div class="gc">
+  <div class="gs">🎯 Puntos: <span id="t-sc">0</span> / 25</div>
+  <div id="t-d" class="dice" onclick="G.roll()">🎲</div>
+  <button class="btn" onclick="G.roll()"><i class="fas fa-dice"></i> ¡Tirar Dado!</button>
+  <div id="t-qa" class="qa" style="display:none">
+    <p id="t-q" style="font-weight:700;color:#4FC3F7;margin-bottom:7px"></p>
+    <div id="t-o"></div>
+    <div id="t-f" style="margin-top:6px;font-weight:700;font-size:.83rem"></div>
+  </div>
+  <div id="t-w" class="wb">🏆 ¡25 puntos! ¡El grupo domina las 5 librerías Python!</div>
+</div>
+</div>
+
+<!-- S16 CRUCIGRAMA -->
+<div class="slide" id="s16">
+<h1 class="st">✏️ Crucigrama — 5 Librerías Python</h1>
+<p class="ss">8 conceptos de NumPy · Pandas · Matplotlib · SciPy · Plotly · Soluciones en archivo del docente</p>
+<div class="gc" style="max-width:580px">
+  <div class="gs" id="c-sc">✅ 0 / 8</div>
+  <div class="cwc"><p>1. 🔢 Librería de Python para cálculo numérico ultrarrápido con arrays (5 letras)</p><input id="c1" maxlength="6" placeholder="N _ _ _ _"></div>
+  <div class="cwc"><p>2. 📋 Librería para tablas de datos con filas y columnas — el Excel de Python (6 letras)</p><input id="c2" maxlength="7" placeholder="P _ _ _ _ _"></div>
+  <div class="cwc"><p>3. 📊 Librería para gráficos estáticos: histogramas, barras, scatter (10 letras)</p><input id="c3" maxlength="11" placeholder="M _ _ _ _ _ _ _ _ _"></div>
+  <div class="cwc"><p>4. ✨ Librería para gráficos INTERACTIVOS con hover, zoom y filtros (6 letras)</p><input id="c4" maxlength="7" placeholder="P _ _ _ _ _"></div>
+  <div class="cwc"><p>5. 🔢 Alias estándar de NumPy — todos los data scientists usan esto (2 letras)</p><input id="c5" maxlength="3" placeholder="N _"></div>
+  <div class="cwc"><p>6. 📋 Nombre del objeto tabla de Pandas con filas y columnas (9 letras)</p><input id="c6" maxlength="10" placeholder="D _ _ _ _ _ _ _ _"></div>
+  <div class="cwc"><p>7. 📊 Operación de Pandas que agrupa filas por una categoría para calcular resúmenes (7 letras)</p><input id="c7" maxlength="8" placeholder="G _ _ _ _ _ _"></div>
+  <div class="cwc"><p>8. ✨ Función de Plotly Express para gráficos de barras interactivos — una sola línea (3 letras)</p><input id="c8" maxlength="4" placeholder="B _ _"></div>
+  <div style="text-align:center;margin-top:10px">
+    <button class="btn" onclick="G.chkCW()">✅ Verificar</button>
+    <button class="btn btn-sec" onclick="G.resetCW()">🔄 Reiniciar</button>
+  </div>
+  <div id="c-fb" style="margin-top:8px;font-size:.77rem;text-align:left;line-height:1.75"></div>
+  <div id="c-w" class="wb">🏆 ¡Crucigrama perfecto! ¡Dominan las 5 librerías!</div>
+</div>
+</div>
+
+<!-- S17 MEMORY MATCH -->
+<div class="slide" id="s17">
+<h1 class="st">🧠 Memory Match — Librerías y Funciones</h1>
+<p class="ss">Encuentra los 8 pares: Librería/Función ↔ Lo que hace · Soluciones en archivo del docente</p>
+<div class="gc">
+  <div class="gs" id="m-sc">🧠 Pares: 0 / 8</div>
+  <div id="m-bd" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:540px;margin:8px auto"></div>
+  <button class="btn" onclick="G.initMM()" style="margin-top:8px">🔄 Nueva partida</button>
+  <div id="m-w" class="wb">🏆 ¡Todos los pares! ¡Eres un experto en librerías Python!</div>
+</div>
+</div>
+
+<!-- S18 FAQ -->
+<div class="slide" id="s18">
+<h1 class="st">💡 Tips para el Bootcamp</h1>
+<p class="ss">Errores comunes y cómo resolverlos en Google Colab</p>
+<div class="grid" style="max-width:1100px">
+  <div class="card" style="border-color:rgba(79,195,247,.2)"><h3 style="color:#4FC3F7">⚡ ModuleNotFoundError: plotly</h3><p>Escribe <code>!pip install plotly</code> en una celda y ejecuta. El <code>!</code> es necesario para instalar desde Colab. Reinicia el kernel después.</p></div>
+  <div class="card" style="border-color:rgba(105,240,174,.2)"><h3 style="color:#69F0AE">📋 KeyError en Pandas</h3><p><code>df['nombre_columna']</code> — el nombre de columna debe coincidir exactamente (mayúsculas, tildes, espacios). Usa <code>df.columns</code> para ver los nombres exactos.</p></div>
+  <div class="card" style="border-color:rgba(255,179,0,.2)"><h3 style="color:#FFB300">📊 Gráfico no aparece</h3><p>Agrega <code>plt.show()</code> al final de cada bloque de gráfico. En Jupyter/Colab también puedes agregar <code>%matplotlib inline</code> al inicio de la sesión.</p></div>
+  <div class="card" style="border-color:rgba(255,107,107,.2)"><h3 style="color:#FF6B6B">✨ Plotly no muestra nada</h3><p>Agrega <code>import plotly.io as pio; pio.renderers.default = "colab"</code> al inicio. Esto configura Plotly para mostrarse correctamente en Google Colab.</p></div>
+  <div class="card" style="border-color:rgba(206,147,216,.2)"><h3 style="color:#CE93D8">🔬 SciPy keepdims warning</h3><p>Usa siempre <code>scipy.stats.mode(datos, keepdims=True)</code>. Sin <code>keepdims=True</code> da advertencias en versiones recientes. Accede al resultado con <code>resultado.mode[0]</code>.</p></div>
+  <div class="card" style="border-color:rgba(79,195,247,.2)"><h3 style="color:#4FC3F7">🔢 NumPy vs lista Python</h3><p><code>np.mean([1,2,3])</code> funciona igual que <code>np.mean(np.array([1,2,3]))</code>. NumPy acepta listas directamente, pero los arrays son más rápidos para grandes volúmenes de datos.</p></div>
+</div>
+</div>
+
+<!-- S19 COMPARATIVA FINAL -->
+<div class="slide" id="s19">
+<h1 class="st">⚖️ Comparativa Final — Las 5 Librerías</h1>
+<p class="ss">Elige la herramienta correcta para cada tarea de análisis en la Alcaldía</p>
+<table class="it" style="max-width:1100px;margin:9px auto">
+  <tr><th>Tarea</th><th>🔢 NumPy</th><th>📋 Pandas</th><th>📊 Matplotlib</th><th>🔬 SciPy</th><th>✨ Plotly</th></tr>
+  <tr><td>Calcular promedio de días PQRS</td><td style="text-align:center;color:#69F0AE">✅ Ideal</td><td style="text-align:center;color:#69F0AE">✅ También</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td></tr>
+  <tr><td>Analizar tabla de recaudo por zona</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#69F0AE">✅ Ideal</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td></tr>
+  <tr><td>Gráfico PDF para informe al Concejo</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#69F0AE">✅ Ideal</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td></tr>
+  <tr><td>¿Correlación inversión-satisfacción?</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#69F0AE">✅ Ideal</td><td style="text-align:center;color:#64748B">—</td></tr>
+  <tr><td>Dashboard web de indicadores</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#69F0AE">✅ Ideal</td></tr>
+  <tr><td>Semáforo automático de indicadores</td><td style="text-align:center;color:#69F0AE">✅ np.where</td><td style="text-align:center;color:#69F0AE">✅ .apply()</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#FFB300">🟡 color=</td></tr>
+  <tr><td>¿Mejoró el proceso? Prueba t</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#69F0AE">✅ Ideal</td><td style="text-align:center;color:#64748B">—</td></tr>
+  <tr><td>Explorar datos interactivamente</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#FFB300">🟡 .describe()</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#64748B">—</td><td style="text-align:center;color:#69F0AE">✅ Ideal</td></tr>
+</table>
+</div>
+
+<!-- S20 WORKFLOW COMPLETO -->
+<div class="slide" id="s20">
+<h1 class="st">🔄 Flujo Completo de Análisis</h1>
+<p class="ss">Cómo combinar las 5 librerías en un análisis real de la Alcaldía de Envigado</p>
+<div class="grid g5" style="max-width:1140px;margin-bottom:12px">
+  <div class="card" style="border-color:rgba(79,195,247,.25);text-align:center"><div style="font-size:2.2rem;margin-bottom:6px">1️⃣</div><h3 style="justify-content:center;color:#4FC3F7">NumPy</h3><p style="font-size:.76rem">Cargar datos crudos, calcular estadísticas, vectorizar operaciones</p></div>
+  <div class="card" style="border-color:rgba(105,240,174,.25);text-align:center"><div style="font-size:2.2rem;margin-bottom:6px">2️⃣</div><h3 style="justify-content:center;color:#69F0AE">Pandas</h3><p style="font-size:.76rem">Limpiar, filtrar, agrupar y transformar el DataFrame por secretaría</p></div>
+  <div class="card" style="border-color:rgba(206,147,216,.25);text-align:center"><div style="font-size:2.2rem;margin-bottom:6px">3️⃣</div><h3 style="justify-content:center;color:#CE93D8">SciPy</h3><p style="font-size:.76rem">Validar si las diferencias son reales (correlación, hipótesis)</p></div>
+  <div class="card" style="border-color:rgba(255,179,0,.25);text-align:center"><div style="font-size:2.2rem;margin-bottom:6px">4️⃣</div><h3 style="justify-content:center;color:#FFB300">Matplotlib</h3><p style="font-size:.76rem">Generar gráficos PNG/PDF para el informe de gestión</p></div>
+  <div class="card" style="border-color:rgba(255,107,107,.25);text-align:center"><div style="font-size:2.2rem;margin-bottom:6px">5️⃣</div><h3 style="justify-content:center;color:#FF6B6B">Plotly</h3><p style="font-size:.76rem">Publicar dashboard interactivo para el portal de transparencia</p></div>
+</div>
+<div class="code-wrap" style="max-width:900px;margin:0 auto">
+  <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">flujo_completo_envigado.py</span></div>
+  <div class="code-body" style="font-size:.73rem"><span class="cm"># ─── 1. NUMPY: Datos y estadísticas base ───────────────────────────────────</span>
+pqrs = np.<span class="fn">array</span>([<span class="nu">142</span>,<span class="nu">89</span>,<span class="nu">203</span>,<span class="nu">78</span>,<span class="nu">165</span>]) <span class="cm"># 5 secretarías</span>
+<span class="fn">print</span>(f<span class="st2">'Media: {np.mean(pqrs):.0f} · Std: {np.std(pqrs):.0f}'</span>)
+
+<span class="cm"># ─── 2. PANDAS: Tabla y análisis por categoría ─────────────────────────────</span>
+df = pd.<span class="fn">DataFrame</span>({<span class="st2">'secretaria'</span>:[<span class="st2">'Gov'</span>,<span class="st2">'Hac'</span>,<span class="st2">'Sal'</span>,<span class="st2">'Edu'</span>,<span class="st2">'Obr'</span>], <span class="st2">'pqrs'</span>:pqrs, <span class="st2">'satisf'</span>:[<span class="nu">78</span>,<span class="nu">85</span>,<span class="nu">62</span>,<span class="nu">81</span>,<span class="nu">55</span>]})
+df[<span class="st2">'estado'</span>] = df[<span class="st2">'pqrs'</span>].<span class="fn">apply</span>(<span class="kw">lambda</span> x: <span class="st2">'🔴'</span> <span class="kw">if</span> x><span class="nu">150</span> <span class="kw">else</span> <span class="st2">'🟢'</span>)
+
+<span class="cm"># ─── 3. SCIPY: Validación estadística ──────────────────────────────────────</span>
+r, p = stats.<span class="fn">pearsonr</span>(df[<span class="st2">'pqrs'</span>], df[<span class="st2">'satisf'</span>])
+<span class="fn">print</span>(f<span class="st2">'Correlación r={r:.2f} · p={p:.4f} → {"Significativa" if p<0.05 else "No significativa"}'</span>)
+
+<span class="cm"># ─── 4. MATPLOTLIB: Gráfico para el informe PDF ────────────────────────────</span>
+fig, ax = plt.<span class="fn">subplots</span>()
+ax.<span class="fn">bar</span>(df[<span class="st2">'secretaria'</span>], df[<span class="st2">'pqrs'</span>], color=[<span class="st2">'#FF6B6B'</span> <span class="kw">if</span> e==<span class="st2">'🔴'</span> <span class="kw">else</span> <span class="st2">'#69F0AE'</span> <span class="kw">for</span> e <span class="kw">in</span> df[<span class="st2">'estado'</span>]])
+plt.<span class="fn">savefig</span>(<span class="st2">'informe_envigado.png'</span>, dpi=<span class="nu">300</span>, bbox_inches=<span class="st2">'tight'</span>)
+
+<span class="cm"># ─── 5. PLOTLY: Dashboard interactivo para la web ──────────────────────────</span>
+fig_px = px.<span class="fn">scatter</span>(df, x=<span class="st2">'pqrs'</span>, y=<span class="st2">'satisf'</span>, text=<span class="st2">'secretaria'</span>, color=<span class="st2">'estado'</span>,
+                     title=<span class="st2">'PQRS vs Satisfacción · Alcaldía Envigado'</span>, template=<span class="st2">'plotly_dark'</span>)
+fig_px.<span class="fn">show</span>()  <span class="cm"># ✨ Interactivo en el navegador</span>
+</div></div>
+</div>
+
+<!-- S21 PRÓXIMOS PASOS -->
+<div class="slide" id="s21">
+<h1 class="st">🚀 Próximos Pasos</h1>
+<p class="ss">Después del Bootcamp — continúa tu camino en Data Science</p>
+<div class="grid g3" style="max-width:960px">
+  <div class="card" style="border-color:rgba(79,195,247,.2)"><h3 style="color:#4FC3F7">📘 Esta semana</h3><p>Toma un Excel real de tu secretaría, cárgalo con <code>pd.read_excel()</code> y aplica <code>.describe()</code>. El primer análisis de datos real de tu área.</p></div>
+  <div class="card" style="border-color:rgba(105,240,174,.2)"><h3 style="color:#69F0AE">📗 En 2 semanas</h3><p>Recrea el gráfico de barras de PQRS de tu secretaría con Plotly y comparte el enlace interactivo con tu equipo de trabajo por Teams.</p></div>
+  <div class="card" style="border-color:rgba(255,179,0,.2)"><h3 style="color:#FFB300">📊 En 1 mes</h3><p>Construye un mini-dashboard con <code>make_subplots</code> de Plotly con 4 indicadores de tu secretaría. Publícalo como HTML.</p></div>
+  <div class="card" style="border-color:rgba(255,107,107,.2)"><h3 style="color:#FF6B6B">✨ Platzi</h3><p>Curso de Python para Data Science · Curso de Pandas y NumPy · Curso de Visualización de Datos con Python · Todos disponibles.</p></div>
+  <div class="card" style="border-color:rgba(206,147,216,.2)"><h3 style="color:#CE93D8">🔬 Machine Learning</h3><p>Siguiente nivel: <code>scikit-learn</code> para predecir recaudo tributario o clasificar PQRS automáticamente por tipo y urgencia.</p></div>
+  <div class="card" style="border-color:rgba(79,195,247,.2)"><h3 style="color:#4FC3F7">🤖 Copilot + Python</h3><p>Usa M365 Copilot para que escriba el código Python por ti con un prompt. Luego ejecuta en Colab. ¡IA + Python = productividad máxima!</p></div>
+</div>
+</div>
+
+<!-- S22 CIERRE -->
+<div class="slide" id="s22">
+<div style="text-align:center;padding-top:4px">
+  <div class="big-e">🏆</div>
+  <h1 class="st" style="font-size:2.8rem">¡Envigado analiza datos<br>con Python y Plotly!</h1>
+  <p class="ss">De hojas de cálculo a dashboards interactivos 🚀</p>
+  <div class="grid g5" style="max-width:1060px;margin:12px auto">
+    <div class="lib-card lc-np" style="padding:12px;text-align:center"><span class="lib-icon" style="font-size:2rem">🔢</span><div class="lib-name" style="color:#4FC3F7;font-size:.9rem">NumPy</div><div class="lib-desc" style="font-size:.72rem">Cálculo veloz</div></div>
+    <div class="lib-card lc-pd" style="padding:12px;text-align:center"><span class="lib-icon" style="font-size:2rem">📋</span><div class="lib-name" style="color:#69F0AE;font-size:.9rem">Pandas</div><div class="lib-desc" style="font-size:.72rem">Tablas de datos</div></div>
+    <div class="lib-card lc-mp" style="padding:12px;text-align:center"><span class="lib-icon" style="font-size:2rem">📊</span><div class="lib-name" style="color:#FFB300;font-size:.9rem">Matplotlib</div><div class="lib-desc" style="font-size:.72rem">Informes PDF</div></div>
+    <div class="lib-card lc-sp" style="padding:12px;text-align:center"><span class="lib-icon" style="font-size:2rem">🔬</span><div class="lib-name" style="color:#CE93D8;font-size:.9rem">SciPy</div><div class="lib-desc" style="font-size:.72rem">Estadística</div></div>
+    <div class="lib-card lc-pl" style="padding:12px;text-align:center"><span class="lib-icon" style="font-size:2rem">✨</span><div class="lib-name" style="color:#FF6B6B;font-size:.9rem">Plotly</div><div class="lib-desc" style="font-size:.72rem">Dashboards web</div></div>
+  </div>
+  <div style="background:rgba(79,195,247,.05);border:1px solid rgba(79,195,247,.15);border-radius:13px;padding:14px 20px;max-width:500px;margin:0 auto">
+    <div style="font-size:.92rem;font-weight:800;color:#4FC3F7;margin-bottom:2px">🏛️ Alcaldía de Envigado · Bootcamp IA Explorador G634</div>
+    <div style="font-size:.76rem;opacity:.75">Talento Tech 2.0 · MinTIC · Universidad de Antioquia · IU Training</div>
+    <div style="font-size:.74rem;opacity:.6;margin-top:2px">📍 Biblioteca Pública Débora Arango · Envigado 2026</div>
+    <div style="margin-top:7px;font-size:.78rem;font-weight:700;color:#FFB300">👨‍🏫 Andrés Eduardo Perdomo López · Vittalik Technology SAS</div>
+  </div>
+</div>
+</div>
+
+<!-- S23-S24 SLIDES EXTRA -->
+<div class="slide" id="s23">
+<span class="lv lv-pd">📋 PANDAS EXTRA</span>
+<h1 class="st">pd.read_excel() — Cargar datos reales</h1>
+<p class="ss">Cómo importar archivos Excel de la Alcaldía directamente a Python</p>
+<div class="comp">
+  <div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div></div><span class="code-label">leer_datos_envigado.py</span></div>
+      <div class="code-body"><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># ─── LEER EXCEL ──────────────────────────────────</span>
+<span class="cm"># 🟢 Cargar archivo Excel del recaudo predial</span>
+df = pd.<span class="fn">read_excel</span>(<span class="st2">'recaudo_envigado_2026.xlsx'</span>,
+                    sheet_name=<span class="st2">'Q1-2026'</span>)
+
+<span class="cm"># ─── LEER CSV ────────────────────────────────────</span>
+<span class="cm"># 🟢 Cargar CSV del registro de PQRS</span>
+df_pqrs = pd.<span class="fn">read_csv</span>(<span class="st2">'pqrs_2026.csv'</span>, encoding=<span class="st2">'utf-8'</span>)
+
+<span class="cm"># ─── LIMPIAR DATOS ────────────────────────────────</span>
+df.<span class="fn">dropna</span>()           <span class="cm"># eliminar filas con vacíos</span>
+df.<span class="fn">fillna</span>(<span class="nu">0</span>)          <span class="cm"># reemplazar vacíos con 0</span>
+df.<span class="fn">drop_duplicates</span>()  <span class="cm"># eliminar filas duplicadas</span>
+
+<span class="cm"># ─── EXPORTAR RESULTADO ───────────────────────────</span>
+df.<span class="fn">to_excel</span>(<span class="st2">'resultado.xlsx'</span>, index=<span class="kw">False</span>)
+df.<span class="fn">to_csv</span>(<span class="st2">'resultado.csv'</span>, index=<span class="kw">False</span>)
+
+<span class="cm"># ─── EN GOOGLE COLAB: SUBIR ARCHIVO ──────────────</span>
+<span class="kw">from</span> google.colab <span class="kw">import</span> files
+files.<span class="fn">upload</span>()  <span class="cm"># 🟢 Abre ventana para subir tu Excel</span>
+</div></div>
+  </div>
+  <div>
+    <div class="grid" style="max-width:100%;gap:9px;margin:0">
+      <div class="card" style="border-color:rgba(105,240,174,.2)"><h3 style="color:#69F0AE">📂 pd.read_excel()</h3><p>Carga directamente tus archivos Excel de la Alcaldía. Soporta .xlsx, .xls, múltiples hojas con <code>sheet_name</code>.</p></div>
+      <div class="card" style="border-color:rgba(105,240,174,.2)"><h3 style="color:#69F0AE">📂 pd.read_csv()</h3><p>Para archivos CSV exportados de sistemas como SIAP, SIMUA o el portal de datos abiertos del municipio de Envigado.</p></div>
+      <div class="card" style="border-color:rgba(105,240,174,.2)"><h3 style="color:#69F0AE">🧹 Limpiar datos</h3><p><code>.dropna()</code> elimina filas con valores vacíos · <code>.fillna(0)</code> rellena con ceros · <code>.drop_duplicates()</code> quita filas repetidas.</p></div>
+      <div class="card" style="border-color:rgba(105,240,174,.2)"><h3 style="color:#69F0AE">💾 Exportar</h3><p><code>df.to_excel('resultado.xlsx')</code> guarda el DataFrame como Excel. Usa <code>index=False</code> para no incluir el índice numérico.</p></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="slide" id="s24">
+<h1 class="st">🎯 Ejercicio Integrador Final</h1>
+<p class="ss">Combina las 5 librerías en un solo análisis — caso real Alcaldía de Envigado</p>
+<div class="card" style="max-width:1000px;margin:0 auto;border-color:rgba(255,107,107,.25)">
+  <h3 style="color:#FF6B6B;font-size:1.1rem;margin-bottom:12px">🏆 Reto Final — Dashboard de Gestión Municipal</h3>
+  <div class="steps">
+    <div class="step"><div class="sn sn-np">1</div><p><strong>NumPy:</strong> Crea un array con los tiempos de respuesta PQRS de las 8 secretarías. Calcula: media, std, percentiles Q1/Q3 con <code>np.mean · np.std · np.percentile</code></p></div>
+    <div class="step"><div class="sn sn-pd">2</div><p><strong>Pandas:</strong> Construye un DataFrame con: secretaría, PQRS del mes, días de respuesta, % de satisfacción, presupuesto. Aplica semáforo con <code>.apply()</code></p></div>
+    <div class="step"><div class="sn sn-sp">3</div><p><strong>SciPy:</strong> Calcula la correlación entre presupuesto y satisfacción ciudadana. Determina si la correlación es estadísticamente significativa (p &lt; 0.05)</p></div>
+    <div class="step"><div class="sn sn-mp">4</div><p><strong>Matplotlib:</strong> Crea una figura con 2×2 subplots: barras de PQRS, histograma de tiempos, scatter inversión-satisfacción, boxplot de días. Guarda como PNG.</p></div>
+    <div class="step"><div class="sn sn-pl">5</div><p><strong>Plotly:</strong> Crea el mismo scatter con <code>px.scatter()</code> pero interactivo. Agrega <code>text='secretaria'</code> para ver el nombre al hacer hover. Muéstralo a la clase.</p></div>
+  </div>
+</div>
+<div class="note npl" style="max-width:1000px;margin-top:10px">⏱️ <strong>Tiempo:</strong> 25 minutos · Grupos de 2-3 personas · Al terminar: cada grupo muestra su gráfico de Plotly en pantalla y explica qué descubrió sobre los datos de la Alcaldía.</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="na" id="pB" onclick="App.prev()"><i class="fas fa-chevron-left"></i></button>
+  <div class="ni"><span id="nc">1</span>/<span id="nt">25</span></div>
+  <button class="na" id="nB" onclick="App.next()"><i class="fas fa-chevron-right"></i></button>
+</div>
+<div class="pb-bar"><div class="pf" id="pF"></div></div>
+</div>
+
+<script>
+const App={cs:0,ts:25,
+  init(){this.upd();document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();this.next()}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();this.prev()}});let tx=0;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX});document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?this.next():this.prev()}})},
+  show(n){if(n<0||n>=this.ts)return;document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));const t=document.getElementById('s'+n);if(t){t.classList.add('active');this.cs=n}this.upd()},
+  upd(){document.getElementById('cs').textContent=this.cs+1;document.getElementById('nc').textContent=this.cs+1;document.getElementById('pF').style.width=((this.cs+1)/this.ts)*100+'%';document.getElementById('pB').disabled=(this.cs===0);document.getElementById('nB').disabled=(this.cs===this.ts-1)},
+  next(){if(this.cs<this.ts-1)this.show(this.cs+1)},prev(){if(this.cs>0)this.show(this.cs-1)}};
+
+const G={sc:0,used:[],
+  qs:[
+    {q:"🔢 ¿Cuál es el alias estándar de NumPy que usan todos los data scientists del mundo?",o:["numpy","num","np","n"],a:2,tip:"import numpy as np — El alias 'np' es universal. Cada data scientist del planeta lo usa así. Nunca verás 'import numpy' sin alias en código profesional."},
+    {q:"📋 ¿Qué es un DataFrame en Pandas?",o:["Un tipo de gráfico","Una tabla de datos con filas y columnas nombradas","Un array numérico","Una función estadística"],a:1,tip:"pd.DataFrame() crea una tabla con columnas nombradas. Es como Excel pero dentro de Python — puede tener millones de filas sin problema."},
+    {q:"🔢 ¿Qué hace np.where(tiempos > 5, '🔴', '🟢') en la Alcaldía?",o:["Filtra solo los valores mayores a 5","Crea un semáforo automático: 🔴 si > 5 días, 🟢 si ≤ 5","Suma todos los valores > 5","Ordena los valores de mayor a menor"],a:1,tip:"np.where(condición, valor_si_verdadero, valor_si_falso) crea semáforos automáticos para TODOS los elementos a la vez, sin necesidad de for loop."},
+    {q:"📊 ¿Cuál es la diferencia principal entre Matplotlib y Plotly?",o:["Matplotlib es más moderno","Plotly solo hace gráficos de barras","Matplotlib genera imágenes estáticas (PNG/PDF) · Plotly genera gráficos interactivos HTML","Son exactamente iguales"],a:2,tip:"Matplotlib → PNG/PDF para informes del Concejo. Plotly → HTML interactivo con hover y zoom para dashboards web de la Alcaldía. Ambas son necesarias."},
+    {q:"✨ ¿Cómo se crea un gráfico de barras interactivo en Plotly Express?",o:["plt.bar(df, x='sec', y='pqrs')","px.bar(df, x='secretaria', y='pqrs')","plotly.bar(x, y)","go.Figure.bar(df)"],a:1,tip:"import plotly.express as px → px.bar(df, x='secretaria', y='pqrs') — Una sola línea genera un gráfico de barras totalmente interactivo con hover, zoom y leyenda."},
+    {q:"📋 ¿Qué hace df.groupby('secretaria')['pqrs'].mean() en Pandas?",o:["Ordena las secretarías por nombre","Filtra las secretarías con más PQRS","Calcula el promedio de PQRS de cada secretaría","Cuenta cuántas secretarías hay"],a:2,tip:".groupby() agrupa filas por la columna especificada. ['pqrs'] selecciona esa columna. .mean() calcula el promedio de cada grupo. Es como una tabla dinámica de Excel."},
+    {q:"🔬 ¿Qué devuelve stats.pearsonr(inversión, satisfaccion)?",o:["Solo el coeficiente r","Un gráfico scatter automático","El coeficiente r y el p-valor de significancia","La media de ambas variables"],a:2,tip:"stats.pearsonr() devuelve una tupla (r, p_valor). r mide la fuerza de la correlación (-1 a +1). p < 0.05 confirma que la correlación es estadísticamente real."},
+    {q:"🔢 ¿Por qué NumPy es más rápido que Python puro para cálculos?",o:["Porque usa menos memoria RAM","Porque opera sobre todos los elementos del array a la vez usando C compilado","Porque usa la GPU del computador","Porque elimina los decimales"],a:1,tip:"NumPy usa C compilado internamente y vectorización: opera sobre TODOS los elementos del array simultáneamente, sin loops Python. Puede ser 100-1000x más rápido para grandes datasets."},
+    {q:"✨ ¿Cuál librería usarías para crear el Dashboard de gestión municipal interactivo de la Alcaldía?",o:["NumPy","SciPy","Matplotlib","Plotly"],a:3,tip:"Plotly con make_subplots() permite crear dashboards con múltiples gráficos interactivos en una sola figura. px.bar(), px.line(), px.scatter() — todos interactivos con hover y zoom."},
+    {q:"📋 ¿Qué hace df.apply(semaforo) en Pandas?",o:["Aplica formato de colores al DataFrame","Ejecuta la función 'semaforo' para cada valor de la columna","Agrupa el DataFrame por colores","Ordena por la columna semáforo"],a:1,tip:".apply(función) ejecuta la función personalizada en cada elemento de la columna. Perfecto para clasificar secretarías con 🟢/🟡/🔴 según sus indicadores."},
+    {q:"📊 ¿Qué hace plt.tight_layout() en Matplotlib?",o:["Cambia el fondo del gráfico","Guarda el gráfico automáticamente","Ajusta los márgenes para que títulos y etiquetas no se corten","Aumenta el tamaño de la fuente"],a:2,tip:"plt.tight_layout() ajusta automáticamente los márgenes y espaciado entre subplots. Siempre úsalo antes de plt.show() o plt.savefig() para evitar que se corten los títulos."},
+    {q:"🔬 ¿Qué indica un p-valor de 0.000023 en la prueba t de hipótesis?",o:["La mejora es demasiado pequeña","El resultado es ambiguo y necesita más datos","La diferencia entre los grupos es estadísticamente significativa — NO es casualidad","El test falló por falta de datos"],a:2,tip:"p = 0.000023 << 0.05 → rechazamos H₀ → la mejora es REAL y estadísticamente significativa. Si M365 Copilot redujo los tiempos de 8d a 5.5d, ese resultado no es coincidencia."}
+  ],
+  roll(){const d=document.getElementById('t-d');const v=Math.floor(Math.random()*6)+1;d.style.transform='rotate(720deg) scale(1.2)';d.style.transition='transform .4s ease';setTimeout(()=>{d.style.transform='rotate(0deg) scale(1)';d.textContent=['⚀','⚁','⚂','⚃','⚄','⚅'][v-1];this.showQ(v)},420)},
+  showQ(pts){let av=this.qs.filter((_,i)=>!this.used.includes(i));if(!av.length){this.used=[];av=this.qs}const idx=this.qs.indexOf(av[Math.floor(Math.random()*av.length)]);this.used.push(idx);const q=this.qs[idx];document.getElementById('t-qa').style.display='block';document.getElementById('t-q').innerHTML=`🎲 <strong>+${pts} puntos</strong> si aciertas<br><span style="font-size:.88rem">${q.q}</span>`;document.getElementById('t-f').textContent='';const od=document.getElementById('t-o');od.innerHTML='';q.o.forEach((o,i)=>{const b=document.createElement('button');b.textContent=o;b.className='qo';b.onclick=()=>{const f=document.getElementById('t-f');if(i===q.a){this.sc+=pts;b.style.background='rgba(105,240,174,.15)';b.style.borderColor='#69F0AE';b.style.color='#69F0AE';f.innerHTML=`✅ <span style="color:#69F0AE;font-weight:800">+${pts} puntos!</span> — ${q.tip}`}else{b.style.background='rgba(255,107,107,.1)';b.style.borderColor='#FF6B6B';b.style.color='#FF6B6B';if(od.children[q.a]){od.children[q.a].style.background='rgba(105,240,174,.15)';od.children[q.a].style.borderColor='#69F0AE'}f.innerHTML=`❌ <span style="color:#FF6B6B">Era: ${q.o[q.a]}</span> — ${q.tip}`}document.getElementById('t-sc').textContent=this.sc;od.querySelectorAll('button').forEach(x=>x.disabled=true);if(this.sc>=25)document.getElementById('t-w').style.display='block'};od.appendChild(b)})},
+  cwA:{c1:"NUMPY",c2:"PANDAS",c3:"MATPLOTLIB",c4:"PLOTLY",c5:"NP",c6:"DATAFRAME",c7:"GROUPBY",c8:"BAR"},
+  chkCW(){let n=0;const fb=[];Object.keys(this.cwA).forEach(id=>{const el=document.getElementById(id),v=(el.value||'').trim().toUpperCase(),a=this.cwA[id];if(v===a){n++;el.style.borderColor='#69F0AE';el.style.background='rgba(105,240,174,.08)';fb.push(`✅ ${a}`)}else{el.style.borderColor='#FF6B6B';el.style.background='rgba(255,107,107,.07)';fb.push(`❌ Pista ${id.slice(1)}: era <strong>${a}</strong>`)}});document.getElementById('c-sc').textContent=`✅ ${n} / 8`;document.getElementById('c-fb').innerHTML=fb.join('<br>');if(n===8)document.getElementById('c-w').style.display='block'},
+  resetCW(){Object.keys(this.cwA).forEach(id=>{const el=document.getElementById(id);el.value='';el.style.borderColor='';el.style.background=''});document.getElementById('c-sc').textContent='✅ 0 / 8';document.getElementById('c-fb').innerHTML='';document.getElementById('c-w').style.display='none'},
+  mmP:[{a:"import numpy as np",b:"Librería de cálculo numérico vectorizado"},{a:"import pandas as pd",b:"Librería para tablas y DataFrames"},{a:"import matplotlib.pyplot as plt",b:"Librería para gráficos estáticos PDF/PNG"},{a:"from scipy import stats",b:"Librería para estadística avanzada"},{a:"import plotly.express as px",b:"Librería para gráficos interactivos HTML"},{a:"df.groupby('col').mean()",b:"Promedio por categoría en Pandas"},{a:"np.where(cond, a, b)",b:"Semáforo condicional para arrays"},{a:"px.bar(df, x='sec', y='val')",b:"Gráfico de barras interactivo Plotly"}],
+  mmF:[],mmM:0,mmL:false,
+  initMM(){const bd=document.getElementById('m-bd');bd.innerHTML='';document.getElementById('m-sc').textContent='🧠 Pares: 0 / 8';document.getElementById('m-w').style.display='none';let it=[];this.mmP.forEach((p,i)=>{it.push({id:i,text:p.a,type:'a'});it.push({id:i,text:p.b,type:'b'})});it.sort(()=>Math.random()-.5);this.mmF=[];this.mmM=0;this.mmL=false;it.forEach((item,idx)=>{const c=document.createElement('div');c.className='mc';c.dataset.idx=idx;c.dataset.id=item.id;c.textContent='❓';c.onclick=()=>this.flipMM(c,item,idx);bd.appendChild(c)})},
+  flipMM(c,item,idx){if(this.mmL||c.dataset.done||this.mmF.find(f=>f.idx===idx))return;c.textContent=item.text;c.style.background=item.type==='a'?'linear-gradient(135deg,#0288D1,#4FC3F7)':'linear-gradient(135deg,#00897B,#69F0AE)';c.style.color=item.type==='a'?'#fff':'#000';this.mmF.push({idx,id:item.id,card:c,type:item.type});if(this.mmF.length===2){this.mmL=true;const[f1,f2]=this.mmF;if(f1.id===f2.id&&f1.type!==f2.type){this.mmM++;f1.card.dataset.done=1;f2.card.dataset.done=1;f1.card.style.opacity='.4';f2.card.style.opacity='.4';document.getElementById('m-sc').textContent=`🧠 Pares: ${this.mmM} / 8`;this.mmF=[];this.mmL=false;if(this.mmM===8)document.getElementById('m-w').style.display='block'}else{setTimeout(()=>{f1.card.textContent='❓';f1.card.style.background='';f1.card.style.color='#fff';f2.card.textContent='❓';f2.card.style.background='';f2.card.style.color='#fff';this.mmF=[];this.mmL=false},750)}}}};
+document.addEventListener('DOMContentLoaded',()=>{App.init();G.initMM()});
+if(document.readyState!=='loading'){App.init();G.initMM()}
+</script>
+</body>
+</html>
